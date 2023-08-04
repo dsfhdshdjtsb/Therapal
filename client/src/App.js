@@ -30,7 +30,7 @@ export default function App() {
 
     return (
         <Routes>
-            <Route exact path="/" element={<Test />} />
+            <Route exact path="/" element={<HomePage/>} />
             <Route path="/test" element={<Test1 />} />
         </Routes>
         

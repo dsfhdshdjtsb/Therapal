@@ -161,7 +161,7 @@ export default function ConfigureChat() {
         }}
       >
         {user ? (
-          <Button
+          <Link to="/test"><Button
             variant="contained"
             sx={{
               bgcolor: "primary.main",
@@ -171,7 +171,7 @@ export default function ConfigureChat() {
             }}
           >
             New Chat
-          </Button>
+          </Button></Link>
         ) : (
           <SignIn />
         )}

@@ -5,6 +5,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import firebase from "../../firebase";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+import GoogleIcon from '@mui/icons-material/Google';
 
 import {
   Grid,
@@ -37,7 +38,21 @@ function SignIn() {
         console.log(error);
       });
   };
-  return <button onClick={signInWithGoogle}>Sign in with Google</button>;
+  return (
+    <Button
+      variant="contained"
+      onClick={signInWithGoogle}
+      sx={{
+        bgcolor: "primary.main",
+        minWidth: "14rem",
+        minHeight: "2.5rem",
+        borderRadius: "16px",
+      }}
+    >
+      <GoogleIcon fontSize="small" sx={{marginBottom:"1%" ,marginRight: "4%"}}/>
+      Sign in with Google
+    </Button>
+  );
 }
 
 export default function ConfigureChat() {
@@ -157,7 +172,7 @@ export default function ConfigureChat() {
             New Chat
           </Button>
         ) : (
-          <SignIn/>
+          <SignIn />
         )}
       </Grid>
     </CardContainer>

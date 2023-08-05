@@ -1,6 +1,10 @@
 import React, { useReducer } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import CardContainer from "./CardContainer";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import firebase from "../../firebase";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 
 import {
   Grid,
@@ -12,6 +16,8 @@ import {
 } from "@mui/material";
 import TraitToggleButton from "./TraitToggleButton";
 
+const auth = firebase.auth();
+
 const stateReducer = (state, action) => {
   const key = action.type;
   const obj = { ...state };
@@ -19,7 +25,23 @@ const stateReducer = (state, action) => {
   return obj;
 };
 
+function SignIn() {
+  const signInWithGoogle = () => {
+    auth
+      .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+      .then(() => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        return auth.signInWithPopup(provider);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  return <button onClick={signInWithGoogle}>Sign in with Google</button>;
+}
+
 export default function ConfigureChat() {
+  const [user] = useAuthState(auth);
   const [selectedTraits, dispatchSelectedTraits] = useReducer(stateReducer, {
     depression: false,
     anxiety: false,
@@ -50,9 +72,9 @@ export default function ConfigureChat() {
         />
       </Grid>
       <Grid item xs={6}>
-        <Grid container spacing={1} sx={{margin: "10% auto"}}>
+        <Grid container spacing={1} sx={{ margin: "10% auto" }}>
           <Grid item xs={12}>
-            <Typography variant="subtitle2" sx={{textAlign: "left"}}>
+            <Typography variant="subtitle2" sx={{ textAlign: "left" }}>
               Select a trait to be matched to others with!
             </Typography>
           </Grid>
@@ -112,18 +134,31 @@ export default function ConfigureChat() {
           </Grid>
         </Grid>
       </Grid>
-      <Grid justifyContent="center" item xs={12} sx={{borderTop:2, padding: "5% 0 0 0", borderColor:"secondary.main"}}>
-        <Button
-          variant="contained"
-          sx={{
-            bgcolor: "primary.main",
-            minWidth: "10rem",
-            minHeight: "2.5rem",
-            borderRadius: "16px",
-          }}
-        >
-          New Chat
-        </Button>
+      <Grid
+        justifyContent="center"
+        item
+        xs={12}
+        sx={{
+          borderTop: 2,
+          padding: "5% 0 0 0",
+          borderColor: "secondary.main",
+        }}
+      >
+        {user ? (
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: "primary.main",
+              minWidth: "10rem",
+              minHeight: "2.5rem",
+              borderRadius: "16px",
+            }}
+          >
+            New Chat
+          </Button>
+        ) : (
+          <SignIn/>
+        )}
       </Grid>
     </CardContainer>
   );

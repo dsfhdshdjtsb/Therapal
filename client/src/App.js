@@ -41,7 +41,7 @@ export default function App() {
       <Routes>
         <Route exact path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/test" element={<Chat />} />
+        <Route path="/test" element={<ChatRoom />} />
       </Routes>
       {/* <div>
             {user ? <ChatRoom /> : <SignIn />}

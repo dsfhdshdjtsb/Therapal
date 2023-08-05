@@ -1,48 +1,20 @@
 import React from "react";
-import { AppBar, Box, Button, Stack, Toolbar, Typography } from "@mui/material";
+import { AppBar, Stack, Toolbar, Typography } from "@mui/material";
+import NavBarButton from "./NavBarButton";
 export default function NavBar() {
   return (
-    <AppBar color="secondary" position="static">
+    <AppBar color="secondary" position="static" sx={{ boxShadow: 3 }}>
       <Toolbar sx={{ height: "7vh" }}>
-        <Stack direction="row" spacing={6} sx={{flexGrow: 8}}>
-          <Typography
-            variant="h4"
-            color="white"
-            sx={{ fontWeight: "medium"}}
-          >
+        <Stack direction="row" spacing={6} sx={{ flexGrow: 8 }}>
+          <Typography variant="h4" color="white" sx={{ fontWeight: "medium" }}>
             Therapal
           </Typography>
-          <Button
-            disableElevation="true"
-            sx={{ bgcolor: "white", minWidth: "8rem" }}
-            variant="contained"
-          >
-            Home
-          </Button>
-          <Button
-            disableElevation="true"
-            sx={{ bgcolor: "white", minWidth: "8rem" }}
-            variant="contained"
-          >
-            Saved
-          </Button>
-          <Button
-            disableElevation="true"
-            sx={{ bgcolor: "white", minWidth: "8rem" }}
-            variant="contained"
-          >
-						Settings
-          </Button>
+          <NavBarButton>Home</NavBarButton>
+          <NavBarButton>History</NavBarButton>
+          <NavBarButton>Settings</NavBarButton>
         </Stack>
-        <Stack direction="row" spacing={4} sx={{flexGrow: 1}}>
-          <Button
-            size="large"
-            disableElevation="true"
-            sx={{ bgcolor: "white", minWidth: "8rem" }}
-            variant="contained"
-          >
-            Log Out
-          </Button>
+        <Stack direction="row" spacing={4} sx={{ flexGrow: 1 }}>
+        <NavBarButton>Log Out</NavBarButton>
         </Stack>
       </Toolbar>
     </AppBar>

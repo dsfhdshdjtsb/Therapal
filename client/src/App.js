@@ -26,6 +26,9 @@ const theme = createTheme({
     secondary: {
       main: "#40C69D",
     },
+    accent: {
+      main: "#374B43",
+    }
   },
 });
 

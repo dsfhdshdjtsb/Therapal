@@ -1,19 +1,13 @@
 import React from "react";
 
 import NavBar from "../components/NavBar";
-import CardContainer from "../components/CardContainer";
-import firebase from "../firebase";
-import "firebase/compat/firestore";
-
-const firestore = firebase.firestore();
+import ConfigureChat from "../components/ConfigureChat";
 
 export default function HomePage() {
   return (
     <React.Fragment>
       <NavBar />
-			<CardContainer title="Test">
-				Hi
-			</CardContainer>
+      <ConfigureChat/>
     </React.Fragment>
   );
 }

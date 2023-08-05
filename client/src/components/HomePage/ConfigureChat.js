@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import TraitToggleButton from "./TraitToggleButton";
+import { Link } from "react-router-dom";
 
 const stateReducer = (state, action) => {
   const key = action.type;
@@ -115,7 +116,7 @@ export default function ConfigureChat() {
         </Grid>
       </Grid>
       <Grid justifyContent="center" item xs={12} sx={{borderTop:2, padding: "5% 0 0 0", borderColor:"secondary.main"}}>
-        <Button
+      <Link to="/test"><Button
           variant="contained"
           sx={{
             bgcolor: "primary.main",
@@ -126,6 +127,7 @@ export default function ConfigureChat() {
         >
           New Chat
         </Button>
+        </Link>
       </Grid>
     </CardContainer>
   );

@@ -38,7 +38,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route exact path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/test" element={<ChatRoom />} />
       </Routes>

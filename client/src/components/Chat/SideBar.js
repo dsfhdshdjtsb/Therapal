@@ -17,15 +17,23 @@ function SideBar(props) {
       <Drawer
         open={true}
         anchor="left"
-        width={"15vw"}
         variant="permanent"
         sx={{
-          boxShadow: 5,
-          overflow: "scroll",
+          overflow: "auto",
           flexShrink: 0,
+          width:"18vw",
+          height: "100%",
+          [`& .MuiDrawer-paper`]: {
+            boxShadow: 2,
+            width: "18vw",
+            height: "100%",
+            boxSizing: "border-box",
+            borderRight: 2,
+            borderColor: "secondary.main",
+          }
         }}
       >
-        <Toolbar />
+        <Toolbar/>
         <Box p={2} pb={0} textAlign={"center"}>
           <Typography variant="h6" sx={{ color: "accent.main" }}>
             Instructions
@@ -34,7 +42,7 @@ function SideBar(props) {
             sx={{ backgroundColor: "accent.main", marginBottom: "5%" }}
           />
         </Box>
-        <Box pl={2} pr={2} width={"15vw"} textAlign={"left"}>
+        <Box pl={2} pr={2} textAlign={"left"}>
           <Typography textAlign={"left"} variant="body1">
             Discuss the question with your chat partner. Share your thoughts,
             experiences, and opinions openly. Feel free to take turns or discuss
@@ -48,7 +56,7 @@ function SideBar(props) {
             discussion.
           </Typography>
         </Box>
-        <Box p={2} width={"15vw"} textAlign={"center"}>
+        <Box p={2} textAlign={"center"}>
           <Typography variant="h6" sx={{ color: "accent.main" }}>
             Rules
           </Typography>

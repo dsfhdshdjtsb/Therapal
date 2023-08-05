@@ -108,7 +108,6 @@ export default function ChatRoom(){
                 <input type="text" ref={inputRef}/>
                 <button type="submit">Send</button>
             </form> 
-            {true && <button onClick={matchmake}>Matchmake</button>}
             {true && <button onClick={()=>sendReport("test")}>report</button>}
             {true && <button onClick={getChats}>load chat</button>}
             {true && <button onClick={getGpt}>gpt</button>}

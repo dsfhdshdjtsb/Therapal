@@ -1,16 +1,18 @@
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Toolbar } from "@mui/material";
 import React from "react";
 import PromptBar from "./PromptBar";
+import ChatMessage from "./ChatMessage";
 
 function ChatWindow() {
-  return <React.Fragment>
-    <Box>
-    ASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASDASD 
+  return (
+    <Box sx={{ position: "relative", flexGrow: 1, overflow: "auto"}}>
+      <Toolbar />
+      <PromptBar />
+      <Box p={"2%"}>
+        <ChatMessage />
+      </Box>
     </Box>
-    <Box width={"300px"}>
-      Test
-    </Box>
-  </React.Fragment>;
+  );
 }
 
-export default ChatWindow
+export default ChatWindow;

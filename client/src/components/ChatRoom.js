@@ -1,6 +1,7 @@
 import firebase from "../firebase"
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+import { useLocation } from 'react-router-dom';
 
 import {useCollectionData} from "react-firebase-hooks/firestore"
 
@@ -11,9 +12,27 @@ const firestore = firebase.firestore();
 
 export default function ChatRoom(){
 
-    const myDisorders = ["depression", "anxiety"];
+    const location = useLocation();
+
+    useEffect(() => {
+        firestore.collection("matchmaking").doc(auth.currentUser.uid).delete();
+        return () => {
+            firestore.collection("matchmaking").doc(auth.currentUser.uid).delete()
+        }
+        //SEND MESSAGE HERE THAT USER HAS LEFT THE CHAT
+    }, [location]);
+
+    const state = location.state;
+    const myDisorders = [];
+    const keys = Object.keys(state);
+    keys.forEach((key) => {
+        if(state[key] === true){
+            myDisorders.push(key);
+        }
+    })
+
     let commonDisorder;
-    
+
     const [conversation, setConversation] = React.useState(auth.currentUser.uid.concat("-"));
     let messagesRef= firestore.collection(conversation);
     useEffect(() => {
@@ -43,7 +62,22 @@ export default function ChatRoom(){
                 })
             }
         });
+        window.addEventListener("beforeunload", (event) => {
+            firestore.collection("matchmaking").doc(auth.currentUser.uid).delete()
+        });
     }, [])
+    // useEffect(() => {
+    //     window.onbeforeunload = () => handler();
+    
+    //     window.addEventListener('beforeunload', (event) => {
+    //       handler();
+    //     });
+    
+    //     return () => {
+    //       handler();
+    //       document.removeEventListener('beforeunload', handler);
+    //     };
+    //   });
     const sendMessage = async(e) =>{
 
         e.preventDefault();
@@ -57,6 +91,7 @@ export default function ChatRoom(){
 
 
     }
+    
     return(
         <>
             <div>
@@ -67,41 +102,55 @@ export default function ChatRoom(){
                 <button type="submit">Send</button>
             </form> 
             {true && <button onClick={matchmake}>Matchmake</button>}
+            {true && <button onClick={()=>sendReport("test")}>report</button>}
         </>   
         )
 
     function matchmake(){
-        const matchmakeRef = firestore.collection("matchmaking");
-        let match;
-        matchmakeRef.doc(auth.currentUser.uid).delete();
-        matchmakeRef.where('disorders', 'array-contains-any', myDisorders).limit(25)
-        .get()
-        .then((snapshot) => {
-        if (snapshot.empty) {
-            console.log('No matching documents.');
-            firestore.collection("matchmaking").doc(auth.currentUser.uid).set({
-                disorders: myDisorders,
-                match: ""
-            })
-            return;
-        }else{
-            let doc = snapshot.docs[Math.floor(Math.random() * snapshot.docs.length)]
-            setConversation(doc.id.concat("-", auth.currentUser.uid))
-            firestore.collection("matchmaking").doc(doc.id).set({
-                match: auth.currentUser.uid
-            }, {merge: true})
-            doc.data().disorders.forEach((disorder) => {
-                if(myDisorders.includes(disorder)){
-                    commonDisorder = disorder;
-                    console.log("commonDisorder= " + commonDisorder);
-                }
-            })
+        if(myDisorders.length !== 0){
+            console.log("test")
+            const matchmakeRef = firestore.collection("matchmaking");
+            let match;
+            matchmakeRef.doc(auth.currentUser.uid).delete();
+            matchmakeRef.where('disorders', 'array-contains-any', myDisorders).limit(25)
+            .get()
+            .then((snapshot) => {
+            if (snapshot.empty) {
+                console.log('No matching documents.');
+                firestore.collection("matchmaking").doc(auth.currentUser.uid).set({
+                    disorders: myDisorders,
+                    match: ""
+                })
+                return;
+            }else{
+                let doc = snapshot.docs[Math.floor(Math.random() * snapshot.docs.length)]
+                setConversation(doc.id.concat("-", auth.currentUser.uid))
+                firestore.collection("matchmaking").doc(doc.id).set({
+                    match: auth.currentUser.uid
+                }, {merge: true})
+                doc.data().disorders.forEach((disorder) => {
+                    if(myDisorders.includes(disorder)){
+                        commonDisorder = disorder;
+                        console.log("commonDisorder= " + commonDisorder);
+                    }
+                })
 
-            matchmakeRef.doc(doc.id).delete();
+                matchmakeRef.doc(doc.id).delete();
+            }
+            
+            })
         }
-        
-        })
     
+    }
+    
+    
+
+    function sendReport(reasoning){
+        firestore.collection("reports").doc(auth.currentUser.uid).set({
+            reasoning: reasoning,
+            reporter: auth.currentUser.displayName,
+            chatlogs: messages,
+        })
     }
 }
 

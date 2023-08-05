@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import CardContainer from "./CardContainer";
 import firebase from "../../firebase";
@@ -19,7 +19,7 @@ import TraitToggleButton from "./TraitToggleButton";
 import { Link } from "react-router-dom";
 
 const auth = firebase.auth();
-
+const firestore = firebase.firestore();
 const stateReducer = (state, action) => {
   const key = action.type;
   const obj = { ...state };
@@ -58,6 +58,13 @@ function SignIn() {
 
 export default function ConfigureChat() {
   const [user] = useAuthState(auth);
+  const [banned, setBanned] = React.useState(false)
+  useEffect(() => {
+    checkBanned();
+    console.log(banned)
+  }, [user])
+
+
   const [selectedTraits, dispatchSelectedTraits] = useReducer(stateReducer, {
     depression: false,
     anxiety: false,
@@ -160,8 +167,10 @@ export default function ConfigureChat() {
           borderColor: "secondary.main",
         }}
       >
-        {user ? (
-          <Link to="/test"><Button
+      {
+      }
+        { user ? ( !banned ? 
+          <Link to="/test" state={selectedTraits}><Button     //!banned and signed in
             variant="contained"
             sx={{
               bgcolor: "primary.main",
@@ -172,10 +181,51 @@ export default function ConfigureChat() {
           >
             New Chat
           </Button></Link>
+
+          : <Button disabled            //banned and signed in
+            variant="contained"
+            sx={{
+              bgcolor: "primary.main",
+              minWidth: "10rem",
+              minHeight: "2.5rem",
+              borderRadius: "16px",
+            }}
+          >
+            Banned
+          </Button>
+
         ) : (
-          <SignIn />
+          <SignIn />                //not signed in
         )}
+        
       </Grid>
     </CardContainer>
   );
+
+
+  function checkBanned(){
+    if(auth.currentUser)
+    {
+      
+      firestore.collection("banned").doc(auth.currentUser.uid).onSnapshot((doc) =>{
+        console.log(doc.data())
+        if(doc.data() !== undefined)
+        {
+          setBanned(true)
+        }
+      },
+      (error) => {
+        console.log(error)
+        if(error.code === "permission-denied")
+        {
+          setBanned(true)
+        }
+
+      })
+    }
+    
+  }
 }
+
+
+

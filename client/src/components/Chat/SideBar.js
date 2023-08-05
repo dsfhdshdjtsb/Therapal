@@ -7,22 +7,34 @@ function SideBar(props) {
 
   return (
     <React.Fragment>
-      <Button
-        onClick={() => {
-          setIsSideBarOpen(true);
+      <Drawer
+        open={true}
+        anchor="left"
+        sx={{ boxShadow: 5 }}
+        ModalProps={{
+          slots: {
+            backdrop: "div",
+          },
+          slotProps: {
+            root: {
+              style: {
+                position: "absolute",
+                top: "unset",
+                bottom: "unset",
+                left: "unset",
+                right: "unset",
+              },
+            },
+          },
+        }}
+        PaperProps={{
+          sx: {
+            height: "73vh",
+            top: "7.1vh",
+          },
         }}
       >
-        CLICK ME
-      </Button>
-      <Drawer anchor="left" open={isSideBarOpen}>
         <Box p={2} width={"15vw"}>
-          <Button 
-            onClick={() => {
-              setIsSideBarOpen(false);
-            }}
-          >
-            CLOSE ME
-          </Button>
           <Typography variant="h6">SideBar</Typography>
         </Box>
       </Drawer>

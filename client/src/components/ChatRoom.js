@@ -12,10 +12,34 @@ const firestore = firebase.firestore();
 
 export default function ChatRoom(){
 
-    const location = useLocation();
+    
     const randomId = Date.now();
     const [otherDisplay, setOtherDisplay] = React.useState("");
-    
+    const [conversation, setConversation] = React.useState(auth.currentUser.uid.concat("-"));
+    let messagesRef= firestore.collection(conversation);
+    const query = messagesRef.orderBy("createdAt");
+    const [messages] = useCollectionData(query, {idField: "id"});
+    const inputRef = useRef(null);
+
+    const location = useLocation();
+    const state = location.state;
+    const myDisorders = [];
+    const keys = Object.keys(state);
+    let myDisplay = state.displayName;
+    let commonDisorder;
+
+    keys.forEach((key) => {
+        if(state[key] === true){
+            myDisorders.push(key);
+        }
+    })
+
+
+    useEffect(() => {
+        console.log(conversation)
+        saveChat(conversation)
+    },[conversation]);
+
     useEffect(() => {
         firestore.collection("matchmaking").doc(auth.currentUser.uid).delete();
         return () => {
@@ -24,30 +48,6 @@ export default function ChatRoom(){
         //SEND MESSAGE HERE THAT USER HAS LEFT THE CHAT
     }, [location]);
 
-    const state = location.state;
-    const myDisorders = [];
-    const keys = Object.keys(state);
-    let myDisplay = state.displayName;
-    
-    keys.forEach((key) => {
-        if(state[key] === true){
-            myDisorders.push(key);
-        }
-    })
-    console.log(myDisorders)
-
-    let commonDisorder;
-
-    const [conversation, setConversation] = React.useState(auth.currentUser.uid.concat("-"));
-    let messagesRef= firestore.collection(conversation);
-    useEffect(() => {
-        console.log(conversation)
-        saveChat(conversation)
-    },[conversation]);
-
-    const query = messagesRef.orderBy("createdAt");
-    const [messages] = useCollectionData(query, {idField: "id"});
-    const inputRef = useRef(null);
     useEffect(() => {
         firestore.collection("matchmaking").doc(auth.currentUser.uid).onSnapshot((doc) => {
             
@@ -71,6 +71,7 @@ export default function ChatRoom(){
         window.addEventListener("beforeunload", (event) => {
             firestore.collection("matchmaking").doc(auth.currentUser.uid).delete()
         });
+        console.log("time to fetch")
     }, [])
     // useEffect(() => {
     //     window.onbeforeunload = () => handler();
@@ -110,6 +111,7 @@ export default function ChatRoom(){
             {true && <button onClick={matchmake}>Matchmake</button>}
             {true && <button onClick={()=>sendReport("test")}>report</button>}
             {true && <button onClick={getChats}>load chat</button>}
+            {true && <button onClick={getGpt}>gpt</button>}
         </>   
         )
 
@@ -131,6 +133,39 @@ export default function ChatRoom(){
                 loadChat(chat);
             });
         });
+    }
+    function getGpt(){
+        const options ={
+            method: "POST",
+            body: JSON.stringify({
+                prompt: genPrompt(),
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+        fetch("http://localhost:3001/api", options)
+            .then((res) => res.json()).then((data)=>{
+                console.log( data)
+            })
+        console.log(stringifyConvo(messages))
+        let test = genPrompt();
+        console.log(test)
+    }
+
+    function genPrompt(){
+        return (
+            "The following is a transcript of an ongoing conversation between 2 people struggling with " + commonDisorder + ". " +
+            "Contribute meaningfully to the conversation by asking 1 or 2 questions. Each question should be no more than 2 sentences in length \n"
+            + stringifyConvo(messages)
+        )
+    }
+    function stringifyConvo(convo){
+        let string = "";
+        convo.forEach((message) => { 
+            string = string + message.username + ": " + message.text + "\n";
+        })
+        return string;
     }
     function getChats(){
 

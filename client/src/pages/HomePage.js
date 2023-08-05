@@ -1,6 +1,11 @@
 import React from "react";
+
 import NavBar from "../components/NavBar";
 import CardContainer from "../components/CardContainer";
+import firebase from "../firebase";
+import "firebase/compat/firestore";
+
+const firestore = firebase.firestore();
 
 export default function HomePage() {
   return (
@@ -12,3 +17,5 @@ export default function HomePage() {
     </React.Fragment>
   );
 }
+
+

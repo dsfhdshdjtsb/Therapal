@@ -65,7 +65,8 @@ export default function ConfigureChat() {
   const [banned, setBanned] = React.useState(false);
   useEffect(() => {
     checkBanned();
-    console.log(banned);
+    if(user)
+      setDisplayName(user.displayName);
   }, [user]);
 
   const [selectedTraits, dispatchSelectedTraits] = useReducer(stateReducer, {
@@ -186,7 +187,7 @@ export default function ConfigureChat() {
         {}
         {user ? (
           !banned ? (
-            <Link to="/test" state={selectedTraits}>
+            <Link to="/test" state={{...selectedTraits, displayName: displayName}}>
               <Button //!banned and signed in
                 variant="contained"
                 sx={{

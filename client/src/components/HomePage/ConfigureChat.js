@@ -5,7 +5,7 @@ import firebase from "../../firebase";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import GoogleIcon from '@mui/icons-material/Google';
+import GoogleIcon from "@mui/icons-material/Google";
 
 import {
   Grid,
@@ -50,20 +50,23 @@ function SignIn() {
         borderRadius: "16px",
       }}
     >
-      <GoogleIcon fontSize="small" sx={{marginBottom:"1%" ,marginRight: "4%"}}/>
+      <GoogleIcon
+        fontSize="small"
+        sx={{ marginBottom: "1%", marginRight: "4%" }}
+      />
       Sign in with Google
     </Button>
   );
 }
 
 export default function ConfigureChat() {
+  const [displayName, setDisplayName] = React.useState("");
   const [user] = useAuthState(auth);
-  const [banned, setBanned] = React.useState(false)
+  const [banned, setBanned] = React.useState(false);
   useEffect(() => {
     checkBanned();
-    console.log(banned)
-  }, [user])
-
+    console.log(banned);
+  }, [user]);
 
   const [selectedTraits, dispatchSelectedTraits] = useReducer(stateReducer, {
     depression: false,
@@ -74,6 +77,12 @@ export default function ConfigureChat() {
     stress: false,
   });
 
+  
+  const newChatHandler= () =>{
+    console.log(displayName);
+    setDisplayName("");
+  }
+
   return (
     <CardContainer height="45vh" width="35%" title="New Chat">
       <Grid item xs={6}>
@@ -82,6 +91,10 @@ export default function ConfigureChat() {
           placeholder="Display name"
           label="Enter display name"
           variant="outlined"
+          value={displayName}
+          onChange={()=>{
+            setDisplayName(document.getElementById("display-name").value);
+          }}
           color="accent"
           size="large"
           InputProps={{
@@ -97,7 +110,10 @@ export default function ConfigureChat() {
       <Grid item xs={6}>
         <Grid container spacing={1} sx={{ margin: "10% auto" }}>
           <Grid item xs={12}>
-            <Typography variant="subtitle2" sx={{ textAlign: "left", color: "accent.main"}}>
+            <Typography
+              variant="subtitle2"
+              sx={{ textAlign: "left", color: "accent.main" }}
+            >
               Select a trait to be matched to others with!
             </Typography>
           </Grid>
@@ -167,65 +183,63 @@ export default function ConfigureChat() {
           borderColor: "secondary.main",
         }}
       >
-      {
-      }
-        { user ? ( !banned ? 
-          <Link to="/test" state={selectedTraits}><Button     //!banned and signed in
-            variant="contained"
-            sx={{
-              bgcolor: "primary.main",
-              minWidth: "10rem",
-              minHeight: "2.5rem",
-              borderRadius: "16px",
-            }}
-          >
-            New Chat
-          </Button></Link>
-
-          : <Button disabled            //banned and signed in
-            variant="contained"
-            sx={{
-              bgcolor: "primary.main",
-              minWidth: "10rem",
-              minHeight: "2.5rem",
-              borderRadius: "16px",
-            }}
-          >
-            Banned
-          </Button>
-
+        {}
+        {user ? (
+          !banned ? (
+            <Link to="/test" state={selectedTraits}>
+              <Button //!banned and signed in
+                variant="contained"
+                sx={{
+                  bgcolor: "primary.main",
+                  minWidth: "10rem",
+                  minHeight: "2.5rem",
+                  borderRadius: "16px",
+                }}
+                onClick={newChatHandler}
+              >
+                New Chat
+              </Button>
+            </Link>
+          ) : (
+            <Button
+              disabled //banned and signed in
+              variant="contained"
+              sx={{
+                bgcolor: "primary.main",
+                minWidth: "10rem",
+                minHeight: "2.5rem",
+                borderRadius: "16px",
+              }}
+            >
+              Banned
+            </Button>
+          )
         ) : (
-          <SignIn />                //not signed in
+          <SignIn /> //not signed in
         )}
-        
       </Grid>
     </CardContainer>
   );
 
-
-  function checkBanned(){
-    if(auth.currentUser)
-    {
-      
-      firestore.collection("banned").doc(auth.currentUser.uid).onSnapshot((doc) =>{
-        console.log(doc.data())
-        if(doc.data() !== undefined)
-        {
-          setBanned(true)
-        }
-      },
-      (error) => {
-        console.log(error)
-        if(error.code === "permission-denied")
-        {
-          setBanned(true)
-        }
-
-      })
+  function checkBanned() {
+    if (auth.currentUser) {
+      firestore
+        .collection("banned")
+        .doc(auth.currentUser.uid)
+        .onSnapshot(
+          doc => {
+            console.log(doc.data());
+            if (doc.data() !== undefined) {
+              setBanned(true);
+            }
+          },
+          error => {
+            console.log(error);
+            if (error.code === "permission-denied") {
+              setBanned(true);
+            }
+          }
+        );
     }
-    
   }
 }
-
-
-

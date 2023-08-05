@@ -34,24 +34,31 @@ const theme = createTheme({
 
 export default function App() {
   const [user] = useAuthState(auth);
-  React.useEffect(() => {
-    console.log(user);
-  }, [user]);
+
   return (
     <ThemeProvider theme={theme}>
-      <Routes>
+      {/* <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/test" element={<ChatRoom />} />
-      </Routes>
+      </Routes> */}
+      <div>
+            {user ? <ChatRoom /> : <SignIn />}
+        </div>
     </ThemeProvider>
   );
 }
 
 function SignIn() {
   const signInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
+    auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+    .then(() => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        return auth.signInWithPopup(provider);
+    })
+    .catch((error) => {
+        console.log(error);
+    });
   };
   return <button onClick={signInWithGoogle}>Sign in with Google</button>;
 }

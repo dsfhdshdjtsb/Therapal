@@ -11,10 +11,20 @@ const firestore = firebase.firestore();
 
 export default function ChatRoom(){
 
+    const myDisorders = ["depression", "anxiety"];
+    let commonDisorder;
+    
     const [conversation, setConversation] = React.useState(auth.currentUser.uid.concat("-"));
     let messagesRef= firestore.collection(conversation);
-    
-    const query = messagesRef.orderBy("createdAt").limit(25);
+    useEffect(() => {
+        messagesRef.get().then((snapshot) => {
+            snapshot.forEach((doc) => {
+                messagesRef.doc(doc.id).delete();
+            });
+        })
+    },[conversation]);
+
+    const query = messagesRef.orderBy("createdAt");
     const [messages] = useCollectionData(query, {idField: "id"});
     const inputRef = useRef(null);
     useEffect(() => {
@@ -24,6 +34,13 @@ export default function ChatRoom(){
             {
                 setConversation(auth.currentUser.uid.concat("-", doc.data().match))
                 messagesRef.doc(auth.currentUser.uid).delete();
+
+                doc.data().disorders.forEach((disorder) => {
+                    if(myDisorders.includes(disorder)){
+                        commonDisorder = disorder;
+                        console.log("commonDisorder= " + commonDisorder);
+                    }
+                })
             }
         });
     }, [])
@@ -57,13 +74,13 @@ export default function ChatRoom(){
         const matchmakeRef = firestore.collection("matchmaking");
         let match;
         matchmakeRef.doc(auth.currentUser.uid).delete();
-        matchmakeRef.where('disorders', 'array-contains-any', ['depression', 'anxiety']).limit(25)
+        matchmakeRef.where('disorders', 'array-contains-any', myDisorders).limit(25)
         .get()
         .then((snapshot) => {
         if (snapshot.empty) {
             console.log('No matching documents.');
             firestore.collection("matchmaking").doc(auth.currentUser.uid).set({
-                disorders: ['depression', 'anxiety'],
+                disorders: myDisorders,
                 match: ""
             })
             return;
@@ -73,6 +90,12 @@ export default function ChatRoom(){
             firestore.collection("matchmaking").doc(doc.id).set({
                 match: auth.currentUser.uid
             }, {merge: true})
+            doc.data().disorders.forEach((disorder) => {
+                if(myDisorders.includes(disorder)){
+                    commonDisorder = disorder;
+                    console.log("commonDisorder= " + commonDisorder);
+                }
+            })
 
             matchmakeRef.doc(doc.id).delete();
         }

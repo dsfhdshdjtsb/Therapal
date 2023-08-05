@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import CardContainer from "../components/CardContainer";
+import CardContainer from "./CardContainer";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 
 import {
@@ -36,6 +36,7 @@ export default function ConfigureChat() {
       <Grid item xs={6}>
         <TextField
           id="display-name"
+          placeholder="Display name"
           label="Enter display name"
           variant="outlined"
           color="accent"
@@ -117,10 +118,10 @@ export default function ConfigureChat() {
         <Button
           variant="contained"
           sx={{
-            bgcolor: "white",
+            bgcolor: "primary.main",
             minWidth: "10rem",
             minHeight: "2.5rem",
-            borderRadius: "8px",
+            borderRadius: "16px",
           }}
         >
           New Chat

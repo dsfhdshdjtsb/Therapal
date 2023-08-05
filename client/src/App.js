@@ -37,14 +37,14 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      {/* <Routes>
+      <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/test" element={<ChatRoom />} />
-      </Routes> */}
-      <div>
+      </Routes>
+      {/* <div>
             {user ? <ChatRoom /> : <SignIn />}
-        </div>
+        </div> */}
     </ThemeProvider>
   );
 }

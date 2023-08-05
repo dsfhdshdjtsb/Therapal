@@ -1,4 +1,4 @@
-import { ToggleButton } from "@mui/material";
+import ToggleButton from "./ToggleButton";
 import React from "react";
 
 export default function TraitToggleButton(props) {

@@ -5,7 +5,7 @@ export default function NavBar() {
   return (
     <AppBar color="secondary" position="static" sx={{ boxShadow: 3 }}>
       <Toolbar sx={{ height: "7vh" }}>
-        <Stack direction="row" spacing={6} sx={{ flexGrow: 8 }}>
+        <Stack direction="row" spacing={4} sx={{ flexGrow: 8 }}>
           <Typography variant="h4" color="white" sx={{ fontWeight: "medium" }}>
             Therapal
           </Typography>

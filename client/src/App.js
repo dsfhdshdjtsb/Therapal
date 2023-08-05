@@ -14,6 +14,7 @@ import Test from "./components/test";
 import firebase from "./firebase";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
+import Chat from "./pages/Chat";
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
@@ -40,7 +41,7 @@ export default function App() {
       <Routes>
         <Route exact path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/test" element={<ChatRoom />} />
+        <Route path="/test" element={<Chat />} />
       </Routes>
       {/* <div>
             {user ? <ChatRoom /> : <SignIn />}
@@ -63,8 +64,3 @@ function SignIn() {
   return <button onClick={signInWithGoogle}>Sign in with Google</button>;
 }
 
-function SignOut() {
-  return (
-    auth.currentUser && <button onClick={() => auth.signOut()}>Sign Out</button>
-  );
-}

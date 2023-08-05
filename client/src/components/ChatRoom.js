@@ -15,7 +15,7 @@ export default function ChatRoom(){
     const location = useLocation();
     const randomId = Date.now();
     const [otherDisplay, setOtherDisplay] = React.useState("");
-    let myDisplay = auth.currentUser.displayName;
+    
     useEffect(() => {
         firestore.collection("matchmaking").doc(auth.currentUser.uid).delete();
         return () => {
@@ -27,11 +27,14 @@ export default function ChatRoom(){
     const state = location.state;
     const myDisorders = [];
     const keys = Object.keys(state);
+    let myDisplay = state.displayName;
+    
     keys.forEach((key) => {
         if(state[key] === true){
             myDisorders.push(key);
         }
     })
+    console.log(myDisorders)
 
     let commonDisorder;
 

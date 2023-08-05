@@ -13,7 +13,9 @@ const firestore = firebase.firestore();
 export default function ChatRoom(){
 
     const location = useLocation();
-
+    const randomId = Date.now();
+    const [otherDisplay, setOtherDisplay] = React.useState("");
+    let myDisplay = auth.currentUser.displayName;
     useEffect(() => {
         firestore.collection("matchmaking").doc(auth.currentUser.uid).delete();
         return () => {
@@ -36,11 +38,8 @@ export default function ChatRoom(){
     const [conversation, setConversation] = React.useState(auth.currentUser.uid.concat("-"));
     let messagesRef= firestore.collection(conversation);
     useEffect(() => {
-        messagesRef.get().then((snapshot) => {
-            snapshot.forEach((doc) => {
-                messagesRef.doc(doc.id).delete();
-            });
-        })
+        console.log(conversation)
+        saveChat(conversation)
     },[conversation]);
 
     const query = messagesRef.orderBy("createdAt");
@@ -48,18 +47,22 @@ export default function ChatRoom(){
     const inputRef = useRef(null);
     useEffect(() => {
         firestore.collection("matchmaking").doc(auth.currentUser.uid).onSnapshot((doc) => {
-            console.log("doc change")
-            if(doc.data() !== undefined)
+            
+            if(doc.data() !== undefined && doc.data().match !== "")
             {
-                setConversation(auth.currentUser.uid.concat("-", doc.data().match))
+                setOtherDisplay( doc.data().otherDisplay);
+                setConversation(auth.currentUser.uid.concat("-", doc.data().match, "-", doc.data().randomId))
+                
+                console.log("saving chat+ " + conversation)
                 messagesRef.doc(auth.currentUser.uid).delete();
 
+                
                 doc.data().disorders.forEach((disorder) => {
                     if(myDisorders.includes(disorder)){
                         commonDisorder = disorder;
-                        console.log("commonDisorder= " + commonDisorder);
                     }
                 })
+                saveChat(auth.currentUser.uid.concat("-", doc.data().match, "-", doc.data().randomId))
             }
         });
         window.addEventListener("beforeunload", (event) => {
@@ -86,7 +89,7 @@ export default function ChatRoom(){
             text: inputRef.current.value,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             uid,
-            username: auth.currentUser.displayName,
+            username: myDisplay,
         });
 
 
@@ -103,12 +106,53 @@ export default function ChatRoom(){
             </form> 
             {true && <button onClick={matchmake}>Matchmake</button>}
             {true && <button onClick={()=>sendReport("test")}>report</button>}
+            {true && <button onClick={getChats}>load chat</button>}
         </>   
         )
 
+    function saveChat(chatid){
+        console.log("ran")
+        if(conversation !== auth.currentUser.uid.concat("-") && conversation !== auth.currentUser.uid.concat("--", randomId) && otherDisplay !== "")
+        {
+            console.log("truetrue")
+            firestore.collection("account").doc(auth.currentUser.uid).set({
+                saved: firebase.firestore.FieldValue.arrayUnion({other: otherDisplay, chatid: chatid})
+                
+            }, {merge: true});
+        }
+    }
+
+    function callback(){
+        getChats().then((chats) => {
+            chats.forEach((chat) => {
+                loadChat(chat);
+            });
+        });
+    }
+    function getChats(){
+
+        firestore.collection("account").doc(auth.currentUser.uid).get().then((doc) => {
+            console.log(doc.data().saved);
+            return doc.data().saved;
+            // doc.data().saved.forEach((chat) => {
+            //     firestore.collection(chat).get().then((snapshot) => {
+            //         snapshot.forEach((doc) => {
+            //             console.log(doc.data())
+            //         })
+            //     })
+            // })
+        })
+    }
+    function loadChat(chatid){
+        firestore.collection(chatid).get().then((snapshot) => {
+            snapshot.forEach((doc) => {
+                console.log(doc.data())
+            })
+        });
+
+    }
     function matchmake(){
         if(myDisorders.length !== 0){
-            console.log("test")
             const matchmakeRef = firestore.collection("matchmaking");
             let match;
             matchmakeRef.doc(auth.currentUser.uid).delete();
@@ -119,15 +163,22 @@ export default function ChatRoom(){
                 console.log('No matching documents.');
                 firestore.collection("matchmaking").doc(auth.currentUser.uid).set({
                     disorders: myDisorders,
+                    randomId: randomId,
+                    myDisplay: auth.currentUser.displayName,
+                    otherDisplay: "",
                     match: ""
                 })
                 return;
             }else{
                 let doc = snapshot.docs[Math.floor(Math.random() * snapshot.docs.length)]
-                setConversation(doc.id.concat("-", auth.currentUser.uid))
+                setOtherDisplay(doc.data().myDisplay);
+                setConversation(doc.id.concat("-", auth.currentUser.uid, "-", doc.data().randomId))
+                saveChat(doc.id.concat("-", auth.currentUser.uid, "-", doc.data().randomId))
                 firestore.collection("matchmaking").doc(doc.id).set({
-                    match: auth.currentUser.uid
+                    match: auth.currentUser.uid,
+                    otherDisplay: auth.currentUser.displayName,
                 }, {merge: true})
+                
                 doc.data().disorders.forEach((disorder) => {
                     if(myDisorders.includes(disorder)){
                         commonDisorder = disorder;
@@ -144,6 +195,16 @@ export default function ChatRoom(){
     }
     
     
+    function ChatMessage(props){
+        const {text, username, uid} = props.message;
+        const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
+        return (
+            <div className={`message ${messageClass}`}>
+                <p>{username }</p>
+                <p>{text}</p>
+            </div>
+            )
+    }
 
     function sendReport(reasoning){
         firestore.collection("reports").doc(auth.currentUser.uid).set({
@@ -154,13 +215,4 @@ export default function ChatRoom(){
     }
 }
 
-function ChatMessage(props){
-    const {text, username, uid} = props.message;
-    const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
-    return (
-        <div className={`message ${messageClass}`}>
-            <p>{username}</p>
-            <p>{text}</p>
-        </div>
-        )
-}
+

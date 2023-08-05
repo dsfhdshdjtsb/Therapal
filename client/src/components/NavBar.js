@@ -15,7 +15,7 @@ const auth = firebase.auth();
 
 export default function NavBar() {
   return (
-    <AppBar color="secondary" position="static" sx={{ boxShadow: 3 }}>
+    <AppBar color="secondary" position="fixed" sx={{ boxShadow: 3, zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Toolbar sx={{ height: "7vh" }}>
         <Typography
           variant="h4"

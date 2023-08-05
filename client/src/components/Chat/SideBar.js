@@ -1,5 +1,12 @@
 import React from "react";
-import { Box, Button, Divider, Drawer, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Drawer,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 
 function SideBar(props) {
@@ -10,31 +17,16 @@ function SideBar(props) {
       <Drawer
         open={true}
         anchor="left"
-        sx={{ boxShadow: 5, overflow: "scroll" }}
-        ModalProps={{
-          slots: {
-            backdrop: "div",
-          },
-          slotProps: {
-            root: {
-              style: {
-                position: "absolute",
-                top: "unset",
-                bottom: "unset",
-                left: "unset",
-                right: "unset",
-              },
-            },
-          },
-        }}
-        PaperProps={{
-          sx: {
-            height: "73vh",
-            top: "7vh",
-          },
+        width={"15vw"}
+        variant="permanent"
+        sx={{
+          boxShadow: 5,
+          overflow: "scroll",
+          flexShrink: 0,
         }}
       >
-        <Box p={2} pb={0} width={"15vw"} textAlign={"center"}>
+        <Toolbar />
+        <Box p={2} pb={0} textAlign={"center"}>
           <Typography variant="h6" sx={{ color: "accent.main" }}>
             Instructions
           </Typography>

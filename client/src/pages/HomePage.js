@@ -1,6 +1,6 @@
 import React from "react";
 
-import NavBar from "../components/HomePage/NavBar";
+import NavBar from "../components/NavBar";
 import ConfigureChat from "../components/HomePage/ConfigureChat";
 
 export default function HomePage() {

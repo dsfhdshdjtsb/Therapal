@@ -8,7 +8,7 @@ function PromptBar() {
 
   return (
     <React.Fragment>
-      <Button
+      <Button 
         onClick={() => {
           setIsPromptBarOpen(true);
         }}
@@ -18,7 +18,7 @@ function PromptBar() {
       <Drawer
         anchor="bottom"
         open={isPromptBarOpen}
-        sx={{ boxShadow: 5 }}
+        sx={{ boxShadow: 5, bottom: "30vh"}}
         ModalProps={{
           slots: {
             backdrop: "div",
@@ -37,8 +37,7 @@ function PromptBar() {
         }}
         PaperProps={{
           sx: {
-            height: "93vh",
-            top: "7.1vh",
+            height: "10vh",
           },
         }}
       >

@@ -6,7 +6,7 @@ export default function NavBarButton(props) {
     <Button
       onClick={props.onClick}
       variant="contained"
-      sx={{ bgcolor: "white", minWidth: "8rem", minHeight: "2.5rem", borderRadius: "16px" }}
+      sx={{ bgcolor: "white", minWidth: "8rem", minHeight: "2.5rem", borderRadius: "16px", color: "accent.main" }}
     >
       {props.children}
     </Button>

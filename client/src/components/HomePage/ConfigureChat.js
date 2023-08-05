@@ -97,7 +97,7 @@ export default function ConfigureChat() {
       <Grid item xs={6}>
         <Grid container spacing={1} sx={{ margin: "10% auto" }}>
           <Grid item xs={12}>
-            <Typography variant="subtitle2" sx={{ textAlign: "left" }}>
+            <Typography variant="subtitle2" sx={{ textAlign: "left", color: "accent.main"}}>
               Select a trait to be matched to others with!
             </Typography>
           </Grid>

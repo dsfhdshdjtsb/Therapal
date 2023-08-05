@@ -16,8 +16,6 @@ const stateReducer = (state, action) => {
   const key = action.type;
   const obj = { ...state };
   obj[key] = action.bool;
-  console.log(key);
-  console.log(obj);
   return obj;
 };
 

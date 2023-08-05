@@ -1,14 +1,12 @@
 import React from "react";
 import NavBar from "../components/NavBar";
-import CardContainer from "../components/CardContainer";
+import ConfigureChat from "../components/ConfigureChat";
 
 export default function HomePage() {
   return (
     <React.Fragment>
       <NavBar />
-			<CardContainer title="Test">
-				Hi
-			</CardContainer>
+      <ConfigureChat/>
     </React.Fragment>
   );
 }

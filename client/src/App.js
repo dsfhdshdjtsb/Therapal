@@ -1,71 +1,52 @@
 import React from "react";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/HomePage"
+import {Route, Routes} from "react-router-dom"
+import Test1 from "./components/test1"
+import ChatRoom from "./components/ChatRoom"
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import "firebase/auth";
-import { initializeApp } from "firebase/app";
-import { GoogleAuthProvider } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { Routes, Route } from "react-router-dom";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+
+import {useAuthState} from "react-firebase-hooks/auth"
+import {useCollectionData} from "react-firebase-hooks/firestore"
 import Test from "./components/test";
-import Test1 from "./components/test1";
-import { create } from "@mui/material/styles/createTransitions";
 
-initializeApp({
-    apiKey: "AIzaSyDP5rmqUlR-_j9qBAHcieSEwYoNbGFYZK4",
-    authDomain: "therapal-104ee.firebaseapp.com",
-    projectId: "therapal-104ee",
-    storageBucket: "therapal-104ee.appspot.com",
-    messagingSenderId: "482427393641",
-    appId: "1:482427393641:web:936f26917efec2306774f8",
-    measurementId: "G-4TTLV9F4D9",
-});
+ import firebase from "./firebase"
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: "#7FFFD4",
-        },
-        secondary: {
-            main: "#40C69D",
-        },
-    }
-});
-
-const auth = getAuth();
-const firestore = getFirestore();
+const auth = firebase.auth();
+const firestore = firebase.firestore();
 
 export default function App() {
     const [user] = useAuthState(auth);
-
+    React.useEffect(()=>{
+        console.log(user)
+    },[user])
     return (
-        <ThemeProvider theme={theme}>
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/test" element={<Test1 />} />
-            </Routes>
-        </ThemeProvider>
-    );
+        // <Routes>
+        //     <Route  path="/" element={<SignIn />} />
+        //     <Route  path="/test" element={<Chatroom/>} />
+        // </Routes>
+        <div>
+            {user ? <ChatRoom /> : <SignIn />}
+        </div>
+        
+    )
+    
 }
 
-function dummy() {
-    return <HomePage />;
-}
-
-function SignIn() {
-    const signInWithGoogle = () => {
-        const provider = new GoogleAuthProvider();
+function SignIn(){
+    const signInWithGoogle = () =>{
+        const provider = new firebase.auth.GoogleAuthProvider();
         auth.signInWithPopup(provider);
-    };
-    return <button onClick={signInWithGoogle}>Sign in with Google</button>;
+    }
+    return(
+        <button onClick={signInWithGoogle}>Sign in with Google</button>
+    )
+}
+function SignOut(){
+    return auth.currentUser && (
+        <button onClick={()=>auth.signOut()}>Sign Out</button>
+    )
 }
 
-function SignOut() {
-    return (
-        auth.currentUser && (
-            <button onClick={() => auth.signOut()}>Sign Out</button>
-        )
-    );
-}
+

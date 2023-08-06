@@ -10,7 +10,7 @@ import React from "react";
 
 export default function PromptBar() {
   return (
-    <Accordion disableGutters={true}>
+    <Accordion disableGutters={true} sx={{backgroundColor: "primary.main"}}>
       <AccordionSummary
         sx={{
           [`& .MuiAccordionSummary-content`]: {
@@ -36,7 +36,7 @@ export default function PromptBar() {
           variant="contained"
           sx={{
             position: "relative",
-            bgcolor: "primary.main",
+            bgcolor: "white",
             maxWidth: "15rem",
             minHeight: "2.5rem",
             borderRadius: "16px",

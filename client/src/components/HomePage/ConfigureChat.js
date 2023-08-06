@@ -231,13 +231,19 @@ export default function ConfigureChat() {
           doc => {
             console.log(doc.data());
             if (doc.data() !== undefined) {
+              console.log("not undefined")
               setBanned(true);
             }
           },
           error => {
             console.log(error);
             if (error.code === "permission-denied") {
-              setBanned(true);
+              console.log("permission denied")
+              if(auth.currentUser !== null)
+              {
+                setBanned(true);
+              }
+                
             }
           }
         );

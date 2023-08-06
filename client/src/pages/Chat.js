@@ -156,6 +156,7 @@ export default function ChatRoom() {
   return (
     <>
       
+      
           <Box sx={{ display: "flex" }}>
             <NavBar />
             <SideBar />

@@ -88,7 +88,7 @@ export default function ConfigureChat() {
     depression: false,
     anxiety: false,
     ptsd: false,
-    ed: false,
+    eatingDisorder: false,
     addiction: false,
     stress: false,
   });
@@ -205,8 +205,8 @@ export default function ConfigureChat() {
             </Grid>
             <Grid item>
               <TraitToggleButton
-                value="ed"
-                selectedTraits={selectedTraits.ed}
+                value="eatingDisorder"
+                selectedTraits={selectedTraits.eatingDisorder}
                 dispatchSelectedTraits={dispatchSelectedTraits}
               >
                 Eating Disorder

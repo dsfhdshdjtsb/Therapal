@@ -29,7 +29,9 @@ export default function NavBar() {
           Therapal
         </Typography>
         <Stack direction="row" spacing={4} sx={{ flexGrow: 8 }}>
-          <NavBarButton>Home</NavBarButton>
+          <Link to="/">
+            <NavBarButton>Home</NavBarButton>
+          </Link>
           <Link to="/history">
             <NavBarButton>History</NavBarButton>
           </Link>

@@ -8,7 +8,7 @@ export default function HistoryItem(props) {
       <Grid item xs={12} sx={{margin: "5% 5% 5% 0"}}>
         <Typography
           variant="body1"
-          sx={{ fontWeight: "regular", fontSize: "0.8rem" }}
+          sx={{ fontWeight: "bold", fontSize: "0.8rem" }}
         >
           {props.date}
         </Typography>

@@ -1,19 +1,16 @@
 import React from "react";
 import { AppBar, Stack, Toolbar, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NavBarButton from "./NavBarButton";
 import firebase from "../firebase";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
-// function SignOut() {
-//   return (
-//     auth.currentUser && <button onClick={() => }>Sign Out</button>
-//   );
-// }
 
 const auth = firebase.auth();
 
 export default function NavBar() {
+  const navigate = useNavigate();
+
   return (
     <AppBar
       color="secondary"
@@ -42,6 +39,7 @@ export default function NavBar() {
               onClick={event => {
                 auth.signOut();
                 console.log("signed out");
+                navigate("/");
               }}
             >
               Log Out

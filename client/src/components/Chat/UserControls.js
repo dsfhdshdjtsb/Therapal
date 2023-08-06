@@ -10,7 +10,9 @@ function UserControls(props) {
   const handleSubmit = e => {
     e.preventDefault();
     setMessage("");
-    props.sendMessage(message);
+    if (message != "") {
+      props.sendMessage(message);
+    }
   };
 
   return (

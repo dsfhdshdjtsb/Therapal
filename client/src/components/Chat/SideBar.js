@@ -85,7 +85,7 @@ function SideBar(props) {
             >
               <TextField
                 id="reportMessage"
-                label="Enter your message"
+                label="Enter your message (optional)"
                 value={reportMessage}
                 onChange={() => {
                   setReportMessage(

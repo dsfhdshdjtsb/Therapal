@@ -2,11 +2,14 @@ import React from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { useRef } from "react";
 
+import { Link } from "react-router-dom";
+
 function UserControls(props) {
   const [message, setMessage] = React.useState("");
   const formRef = useRef();
   const handleSubmit = e => {
     e.preventDefault();
+    setMessage("");
     props.sendMessage(message);
   };
 
@@ -26,26 +29,38 @@ function UserControls(props) {
           width: "78%",
         }}
       >
-        <Button
-          variant="contained"
-          size="large"
-          sx={{
-            padding: "1.5rem",
+        <Link
+          style={{
+            padding: "0.5rem",
             fontSize: "1rem",
-            position: "relative",
             bgcolor: "primary.main",
-            whiteSpace: "nowrap",
-            maxHeight: "3rem",
-            borderRadius: "16px",
-            margin: "5px 2% 0 0",
+            margin: "0 2% 0 0",
           }}
+          to="/"
         >
-          Disconnect
-        </Button>
-        <form onSubmit={handleSubmit} ref={formRef} style={{width: "100%", display: "flex"}}>
+          <Button
+            variant="contained"
+            size="large"
+            sx={{
+              fontSize: "1rem",
+              bgcolor: "primary.main",
+              whiteSpace: "nowrap",
+              maxHeight: "3rem",
+              borderRadius: "16px",
+              margin: "0 2% 0 0",
+            }}
+          >
+            Disconnect
+          </Button>
+        </Link>
+        <form
+          onSubmit={handleSubmit}
+          ref={formRef}
+          style={{ width: "100%", display: "flex" }}
+        >
           <TextField
             onKeyDown={e => {
-              if (e.code ==="Enter" && !e.shiftKey) {
+              if (e.code === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 formRef.current.requestSubmit();
               }

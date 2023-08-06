@@ -22,7 +22,7 @@ const firestore = firebase.firestore();
 
 export default function ChatRoom() {
   const randomId = Date.now();
-  
+
   const [otherDisplay, setOtherDisplay] = React.useState("");
   const [conversation, setConversation] = React.useState(auth.currentUser.uid
   );
@@ -38,10 +38,8 @@ export default function ChatRoom() {
   const keys = Object.keys(state);
   let myDisplay = state.displayName;
   let historyMessageRef = state.historyMessageRef;
-  
-  
-  console.log("shared disorders")
-  console.log(sharedDisorders)
+
+  let commonDisorder;
 
   keys.forEach(key => {
     if (state[key] === true) {
@@ -57,7 +55,7 @@ export default function ChatRoom() {
     return () => {
       firestore.collection("matchmaking").doc(auth.currentUser.uid).delete();
       sendLeftMessage();
-    }
+    };
   }, [conversation]);
 
   useEffect(() => {
@@ -65,7 +63,6 @@ export default function ChatRoom() {
       firestore.collection("matchmaking").doc(auth.currentUser.uid).delete();
       sendLeftMessage();
     };
-    
   }, [location]);
 
   useEffect(() => {
@@ -107,17 +104,13 @@ export default function ChatRoom() {
     });
     console.log("time to fetch");
 
-    
-    if(historyMessageRef)
-    {
-      console.log("historyMessageRef: " + historyMessageRef)
+    if (historyMessageRef) {
+      console.log("historyMessageRef: " + historyMessageRef);
       setConversation(historyMessageRef);
     }
-    if(!historyMessageRef)
-    {
+    if (!historyMessageRef) {
       matchmake();
     }
-    
   }, []);
   // useEffect(() => {
   //     window.onbeforeunload = () => handler();
@@ -131,7 +124,7 @@ export default function ChatRoom() {
   //       document.removeEventListener('beforeunload', handler);
   //     };
   //   });
-  const sendMessage = async (text)  => {
+  const sendMessage = async text => {
     const { uid } = auth.currentUser;
     await messagesRef.add({
       text,
@@ -152,7 +145,9 @@ export default function ChatRoom() {
       });
     }
   };
-
+// otherDisplay: display name of other person, means you have matchmaked
+// historyMessageRef: came from history
+// if you matchmade with someone, height = 82vh but if you enter from history, height = 100vh
   return (
     <>
       
@@ -160,8 +155,9 @@ export default function ChatRoom() {
           <Box sx={{ display: "flex" }}>
             <NavBar />
             <SideBar />
-            {(otherDisplay || historyMessageRef) ? <ChatWindow messages={messages} getGpt={getGpt} auth={auth}/> : <div className="Loading"> <PulseLoader color={"#7FFFD4"} size={10} /></div>}
-
+            {!otherDisplay && !historyMessageRef && <div className="Loading"> <PulseLoader color={"#7FFFD4"} size={10} /></div> }
+            {!otherDisplay && historyMessageRef && <ChatWindow height={"100vh"} messages={messages} getGpt={getGpt} auth={auth}/>}
+            {otherDisplay && !historyMessageRef && <ChatWindow height={"82vh"} messages={messages} getGpt={getGpt} auth={auth}/> }
             {otherDisplay && !historyMessageRef && <UserControls sendMessage={sendMessage} sendReport={sendReport}/> }
           </Box>
           :
@@ -223,16 +219,17 @@ export default function ChatRoom() {
         }
     }
     fetch("https://oyster-app-cfsz2.ondigitalocean.app/api/api", options) //change something on digital ocean to fix this but not my problem
-        .then((res) => res.json()).then((data)=>{
-            const {uid} = auth.currentUser;
-            messagesRef.add({
-                text: data.message,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                uid: "ChatGPT",
-                username: "Therapal",
-            });
-        })
-}
+      .then(res => res.json())
+      .then(data => {
+        const { uid } = auth.currentUser;
+        messagesRef.add({
+          text: data.message,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          uid: "ChatGPT",
+          username: "Therapal",
+        });
+      });
+  }
 
   function genPrompt() {
     return (
@@ -317,8 +314,6 @@ export default function ChatRoom() {
         });
     }
   }
-
-
 
   function sendReport(reasoning) {
     firestore.collection("reports").doc(auth.currentUser.uid).set({

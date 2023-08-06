@@ -26,7 +26,7 @@ export default function NavBar() {
           color="white"
           sx={{ fontWeight: "medium", mr: "5%" }}
         >
-          Therapal
+          TheraPal
         </Typography>
         <Stack direction="row" spacing={4} sx={{ flexGrow: 8 }}>
           <Link to="/">

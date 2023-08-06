@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { usePrompt, useRef } from "react";
 import PromptBar from "./PromptBar";
 import ChatMessage from "./ChatMessage";
+import { useMediaQuery } from "@mui/material";
 
 function ChatWindow(props) {
   const scrollDiv = useRef();
@@ -27,7 +28,10 @@ function ChatWindow(props) {
     
     return <ChatMessage key={msg.id} text={text} name={username} sent={sent} />;
   }
-  
+
+  const md = useMediaQuery(theme=>theme.breakpoints.up("md"));
+  const lg = useMediaQuery(theme=>theme.breakpoints.up("xl"));
+ 
 
   return (
     <>
@@ -41,7 +45,7 @@ function ChatWindow(props) {
       >
         <Toolbar />
         <PromptBar prompt={prompt} getGpt={props.getGpt} messages={props.messages}/>
-        <Box p={"4% 2% 2% 2%"} display={"flex"} flexDirection={"column"}>
+        <Box p={lg ? "4% 2% 2% 2%": md ? "7% 2% 1% 0%": "0 0 0 0"} display={"flex"} flexDirection={"column"}>
           {props.messages && props.messages.map(msg => renderMessage(msg))}
           <div ref={scrollDiv}></div>
         </Box>

@@ -6,6 +6,7 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import GoogleIcon from "@mui/icons-material/Google";
+import { UseMediaQuery, useMediaQuery } from "@mui/material";
 
 import {
   Grid,
@@ -60,6 +61,8 @@ function SignIn() {
 }
 
 export default function ConfigureChat() {
+  const md = useMediaQuery(theme=>theme.breakpoints.up("md"));
+  const lg = useMediaQuery(theme=>theme.breakpoints.up("xl"));
   const [displayName, setDisplayName] = React.useState("");
   const [user] = useAuthState(auth);
   const [banned, setBanned] = React.useState(false);
@@ -73,7 +76,7 @@ export default function ConfigureChat() {
     depression: false,
     anxiety: false,
     ptsd: false,
-    eatingDisorder: false,
+    ed: false,
     addiction: false,
     stress: false,
   });
@@ -85,7 +88,7 @@ export default function ConfigureChat() {
   }
 
   return (
-    <CardContainer height="45vh" width="35%" title="New Chat">
+    <CardContainer height={lg ? "45vh" :"40vh"} width={lg ? "35%":"65%"} title="New Chat">
       <Grid item xs={6}>
         <TextField
           id="display-name"
@@ -147,8 +150,8 @@ export default function ConfigureChat() {
           </Grid>
           <Grid item>
             <TraitToggleButton
-              value="eatingDisorder"
-              selectedTraits={selectedTraits.eatingDisorder}
+              value="ed"
+              selectedTraits={selectedTraits.ed}
               dispatchSelectedTraits={dispatchSelectedTraits}
             >
               Eating Disorder
@@ -231,19 +234,13 @@ export default function ConfigureChat() {
           doc => {
             console.log(doc.data());
             if (doc.data() !== undefined) {
-              console.log("not undefined")
               setBanned(true);
             }
           },
           error => {
             console.log(error);
             if (error.code === "permission-denied") {
-              console.log("permission denied")
-              if(auth.currentUser !== null)
-              {
-                setBanned(true);
-              }
-                
+              setBanned(true);
             }
           }
         );

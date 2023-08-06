@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 import React, { useEffect, useRef, CSSProperties } from "react";
-
+import { useMediaQuery } from "@mui/material";
 import { Box } from "@mui/material";
 
 import NavBar from "../components/NavBar";
@@ -159,7 +159,8 @@ export default function ChatRoom() {
       });
     }
   };
-
+  const md = useMediaQuery(theme=>theme.breakpoints.up("md"));
+  const lg = useMediaQuery(theme=>theme.breakpoints.up("xl"));
   // useEffect(() => {
   //   sendStartMessage();
   // }, [otherDisplay]);
@@ -171,6 +172,7 @@ export default function ChatRoom() {
           <Box sx={{ display: "flex" }}>
             <NavBar />
             <SideBar sendReport={sendReport}/>
+            
             {!otherDisplay && !historyMessageRef && <div className="Loading"> <PulseLoader color={"#7FFFD4"} size={10} /></div> }
             {!otherDisplay && historyMessageRef && <ChatWindow height={"100vh"} messages={messages} getGpt={getGpt} auth={auth}/>}
             {otherDisplay && !historyMessageRef && <ChatWindow height={"82vh"} messages={messages} getGpt={getGpt} auth={auth}/> }

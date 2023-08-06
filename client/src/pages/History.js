@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Box, Toolbar, Typography } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import NavBar from "../components/NavBar";
 import HistoryItem from "../components/History/HistoryItem";
 
@@ -9,6 +10,9 @@ const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 export default function History() {
+  const md = useMediaQuery(theme=>theme.breakpoints.up("md"));
+  const lg = useMediaQuery(theme=>theme.breakpoints.up("xl"));
+
   const [history, setHistory] = React.useState([]);
   useEffect(() => {
     firestore
@@ -32,12 +36,18 @@ export default function History() {
               name={chat.other}
               date={chat.time}
               historyRef={chat.chatid}
-              width="12%"
-              height="15vh"
+              width={lg ? "12%": md ? "20%" : "25%"}
+              height={"15vh"}
             ></HistoryItem>
           ))
         ) : (
-          <Typography sx={{margin: "auto", vh:"50vh"}} variant="h6" color={"accent.main"}>No history yet!</Typography>
+          <Typography
+            sx={{ margin: "auto", vh: "50vh" }}
+            variant="h6"
+            color={"accent.main"}
+          >
+            No history yet!
+          </Typography>
         )}
       </Box>
     </React.Fragment>

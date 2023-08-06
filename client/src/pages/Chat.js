@@ -164,7 +164,7 @@ export default function ChatRoom() {
     }
   }
 
-  function getGpt(){
+  async function getGpt(){
     console.log(commonDisorder)
     const options ={
         method: "POST",
@@ -177,7 +177,6 @@ export default function ChatRoom() {
     }
     fetch("https://oyster-app-cfsz2.ondigitalocean.app/api/api", options) //change something on digital ocean to fix this but not my problem
         .then((res) => res.json()).then((data)=>{
-            console.log( data)
             const {uid} = auth.currentUser;
             messagesRef.add({
                 text: data.message,
@@ -186,8 +185,6 @@ export default function ChatRoom() {
                 username: "Therapal",
             });
         })
-
-
 }
 
   function genPrompt() {

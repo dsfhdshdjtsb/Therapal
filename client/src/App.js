@@ -2,7 +2,7 @@ import React from "react";
 import HomePage from "./pages/HomePage";
 import { Route, Routes } from "react-router-dom";
 import Test1 from "./components/test1";
-import ChatRoom from "./components/ChatRoom";
+import ChatRoom from "./pages/Chat";
 
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
@@ -42,7 +42,6 @@ export default function App() {
         <Route exact path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/chat" element={<Chat />} />
-        <Route path="/test" element={<ChatRoom />} />
       </Routes>
       {/* <div>
             {user ? <ChatRoom /> : <SignIn />}

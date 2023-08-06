@@ -8,7 +8,7 @@ import firebase from "../firebase";
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
-function getChat() {
+function useChat(){
   firestore
     .collection("account")
     .doc(auth.currentUser.uid)
@@ -17,17 +17,14 @@ function getChat() {
       console.log(doc.data().saved);
       // return doc.data().saved;
       doc.data().saved.map(chat => {
-        //create new object with chatid, other, time
-        //button with link to chat but pass in chatid as prop
-        console.log(chat);
-        <HistoryItem
+        return <HistoryItem
           name={chat.other}
           date={chat.time}
           width="12%"
           height="15vh"
         ></HistoryItem>;
       });
-    });
+    })
 }
 
 export default function History() {
@@ -36,7 +33,7 @@ export default function History() {
       <NavBar />
       <Toolbar />
       <Box display={"flex"} flexWrap={"wrap"} padding={"2%"}>
-        {getChat()}
+        {useChat()}
       </Box>
     </React.Fragment>
   );

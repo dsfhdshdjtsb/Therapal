@@ -196,7 +196,7 @@ function SideBar(props) {
             </ListItem>
             <ListItem sx={{ paddingBottom: 0.5 }}>
               <Typography variant="body1">
-                5. Respect and Empathy: Be kind and understanding.
+                5. Non-Judgmental Approach: Avoid making judgments or assumptions about each other's experiences
               </Typography>
             </ListItem>
           </List>

@@ -4,7 +4,6 @@ import "firebase/compat/firestore";
 import { useLocation } from "react-router-dom";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
-
 import React, { useEffect, useRef, CSSProperties } from "react";
 import { useMediaQuery } from "@mui/material";
 import { Box } from "@mui/material";

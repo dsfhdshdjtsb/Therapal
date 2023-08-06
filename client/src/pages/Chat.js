@@ -185,7 +185,7 @@ export default function ChatRoom() {
             "Content-Type": "application/json"
         }
     }
-    fetch("http://oyster-app-cfsz2.ondigitalocean.app/api", options)
+    fetch("https://oyster-app-cfsz2.ondigitalocean.app/api/api", options) //change something on digital ocean to fix this but not my problem
         .then((res) => res.json()).then((data)=>{
             console.log( data)
             const {uid} = auth.currentUser;

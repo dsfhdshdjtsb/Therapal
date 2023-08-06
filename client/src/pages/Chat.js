@@ -150,7 +150,6 @@ export default function ChatRoom() {
 // if you matchmade with someone, height = 82vh but if you enter from history, height = 100vh
   return (
     <>
-    
           <Box sx={{ display: "flex" }}>
             <NavBar />
             <SideBar />

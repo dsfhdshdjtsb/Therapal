@@ -7,6 +7,8 @@ function UserControls(props) {
   const formRef = useRef();
   const handleSubmit = e => {
     e.preventDefault();
+    formRef.current.reset();
+    console.log("HERE")
     props.sendMessage(message);
   };
 

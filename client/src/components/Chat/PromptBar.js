@@ -7,10 +7,8 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import React from "react";
-import { useState } from "react";
 
 export default function PromptBar(props) {
-  const [prompt, setPrompt] = useState("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at felis non turpis scelerisque gravida. Suspendisse potenti. Proin sodales arcu id nunc tempus porttitor. ");
 
   return (
     <Accordion
@@ -35,7 +33,7 @@ export default function PromptBar(props) {
         expandIcon={<ExpandMoreIcon />}
       >
         <Typography variant="h6" color={"accent.main"}>
-          Your Prompt
+          TheraPal Prompt
         </Typography>
       </AccordionSummary>
       <AccordionDetails
@@ -46,15 +44,15 @@ export default function PromptBar(props) {
           borderColor: "secondary.main",
         }}
       >
-        <Typography value={prompt} variant="subtitle1" textAlign={"center"}>
-          {prompt}
+        <Typography variant="subtitle1" textAlign={"center"}>
+          {props.prompt}
         </Typography>
         <Button
           variant="contained"
           sx={{
             position: "relative",
             bgcolor: "white",
-            maxWidth: "15rem",
+            maxWidth: "20rem",
             minHeight: "2.5rem",
             borderRadius: "16px",
             margin: "1% auto",
@@ -63,7 +61,7 @@ export default function PromptBar(props) {
             props.getGpt();
           }}
         >
-          Generate new prompt
+          Generate new TheraPal prompt
         </Button>
       </AccordionDetails>
     </Accordion>

@@ -120,26 +120,26 @@ export default function ChatRoom() {
 
   
   return (
-    <Box sx={{ display: "flex" }}>
-      <NavBar />
-      <SideBar />
-      <ChatWindow />
-      <UserControls />
-    </Box>
+    // <Box sx={{ display: "flex" }}>
+    //   <NavBar />
+    //   <SideBar />
+    //   <ChatWindow />
+    //   <UserControls />
+    // </Box>
   
 
-  // <div>
-  //     <div>
-  //             {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-  //         </div>
-  //         <form onSubmit={sendMessage}>
-  //             <input type="text" ref={inputRef}/>
-  //             <button type="submit">Send</button>
-  //         </form> 
-  //         {true && <button onClick={()=>sendReport("test")}>report</button>}
-  //         {true && <button onClick={getChats}>load chat</button>}
-  //         {true && <button onClick={getGpt}>gpt</button>} 
-  // </div>
+  <div>
+      <div>
+              {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+          </div>
+          <form onSubmit={sendMessage}>
+              <input type="text" ref={inputRef}/>
+              <button type="submit">Send</button>
+          </form> 
+          {true && <button onClick={()=>sendReport("test")}>report</button>}
+          {true && <button onClick={getChats}>load chat</button>}
+          {true && <button onClick={getGpt}>gpt</button>} 
+  </div>
       
         
   )

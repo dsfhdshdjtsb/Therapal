@@ -26,7 +26,8 @@ export default function ChatRoom(){
     const myDisorders = [];
     const keys = Object.keys(state);
     let myDisplay = state.displayName;
-    let commonDisorder;
+    const [commonDisorder, setCommonDisorder] = React.useState("");
+    console.log("common disorder is: " + commonDisorder)
 
     keys.forEach((key) => {
         if(state[key] === true){
@@ -38,6 +39,7 @@ export default function ChatRoom(){
     useEffect(() => {
         console.log(conversation)
         saveChat(conversation)
+    
     },[conversation]);
 
     useEffect(() => {
@@ -62,8 +64,9 @@ export default function ChatRoom(){
                 
                 doc.data().disorders.forEach((disorder) => {
                     if(myDisorders.includes(disorder)){
-                        commonDisorder = disorder;
+                        setCommonDisorder(disorder);
                     }
+                    console.log("set common disorder to " + commonDisorder)
                 })
                 saveChat(auth.currentUser.uid.concat("-", doc.data().match, "-", doc.data().randomId))
             }
@@ -72,6 +75,7 @@ export default function ChatRoom(){
             firestore.collection("matchmaking").doc(auth.currentUser.uid).delete()
         });
         console.log("time to fetch")
+        matchmake();
     }, [])
     // useEffect(() => {
     //     window.onbeforeunload = () => handler();
@@ -134,6 +138,7 @@ export default function ChatRoom(){
         });
     }
     function getGpt(){
+        console.log(commonDisorder)
         const options ={
             method: "POST",
             body: JSON.stringify({
@@ -146,17 +151,30 @@ export default function ChatRoom(){
         fetch("http://localhost:3001/api", options)
             .then((res) => res.json()).then((data)=>{
                 console.log( data)
+                const {uid} = auth.currentUser;
+                messagesRef.add({
+                    text: data.message,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    uid: "ChatGPT",
+                    username: "Therapal",
+                });
             })
-        console.log(stringifyConvo(messages))
-        let test = genPrompt();
-        console.log(test)
+
+
     }
 
     function genPrompt(){
         return (
-            "The following is a transcript of an ongoing conversation between 2 people struggling with " + commonDisorder + ". " +
-            "Contribute meaningfully to the conversation by asking 1 or 2 questions. Each question should be no more than 2 sentences in length \n"
-            + stringifyConvo(messages)
+            [{
+                role:"system", content: "You are going to pretend to be Therapal. Therapal is a therapist that is helping 2 people who struggle with " + commonDisorder + ". " 
+                + " These 2 people are having a conversation about their struggles. Start every message with \"Therapal:\"",
+                role: "user", content: " Help these 2 people by asking 1 or 2 questions relevent to their struggles and experiences. Each question should be no more than 2 sentences in length." 
+                + " A transcript of the current conversation is available below. If applicable, specify who you are speaking to. For example: \n\n " 
+                + "Therapal: Bob, Have you considered seeing a therapist? " + stringifyConvo(messages)
+            } ]
+            // "The following is a transcript of an ongoing conversation between 2 people struggling with " + commonDisorder + ". " +
+            // "Contribute meaningfully to the conversation by asking 1 or 2 questions. Each question should be no more than 2 sentences in length \n"
+            // + stringifyConvo(messages)
         )
     }
     function stringifyConvo(convo){
@@ -218,9 +236,10 @@ export default function ChatRoom(){
                 
                 doc.data().disorders.forEach((disorder) => {
                     if(myDisorders.includes(disorder)){
-                        commonDisorder = disorder;
+                        setCommonDisorder(disorder);
                         console.log("commonDisorder= " + commonDisorder);
                     }
+                    console.log("set common disorder to " + commonDisorder)
                 })
 
                 matchmakeRef.doc(doc.id).delete();

@@ -133,6 +133,7 @@ export default function ChatRoom() {
       username: myDisplay,
     });
   };
+
   const sendLeftMessage = async ()  => {
     if(!historyMessageRef)
     {
@@ -145,13 +146,28 @@ export default function ChatRoom() {
       });
     }
   };
+
+  const sendStartMessage = async ()  => {
+    if(!historyMessageRef)
+    {
+      let stringDisorders = sharedDisorders
+      await messagesRef.add({
+        text: auth.currentUser.displayName + ", you have been matched with " + otherDisplay + "." + " You have both selected " + sharedDisorders.toString().replaceAll(',', ', '),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        uid: "System",
+        username: "System",
+      });
+    }
+  };
+
+  useEffect(() => {
+    sendStartMessage();
+  }, [otherDisplay]);
 // otherDisplay: display name of other person, means you have matchmaked
 // historyMessageRef: came from history
 // if you matchmade with someone, height = 82vh but if you enter from history, height = 100vh
   return (
     <>
-      
-      
           <Box sx={{ display: "flex" }}>
             <NavBar />
             <SideBar />
@@ -159,10 +175,7 @@ export default function ChatRoom() {
             {!otherDisplay && historyMessageRef && <ChatWindow height={"100vh"} messages={messages} getGpt={getGpt} auth={auth}/>}
             {otherDisplay && !historyMessageRef && <ChatWindow height={"82vh"} messages={messages} getGpt={getGpt} auth={auth}/> }
             {otherDisplay && !historyMessageRef && <UserControls sendMessage={sendMessage} sendReport={sendReport}/> }
-          </Box>
-          :
-          
-        
+          </Box> 
     </>
     
     
@@ -308,7 +321,6 @@ export default function ChatRoom() {
                 setSharedDisorders(prev => [...prev, disorder]);
               }
             });
-
             matchmakeRef.doc(doc.id).delete();
           }
         });

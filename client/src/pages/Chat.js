@@ -134,7 +134,7 @@ export default function ChatRoom() {
     });
   };
   const sendLeftMessage = async ()  => {
-    if(!messagesRef)
+    if(!historyMessageRef)
     {
       const { uid } = auth.currentUser;
       await messagesRef.add({

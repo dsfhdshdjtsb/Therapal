@@ -27,6 +27,11 @@ export default function ChatRoom() {
   const [conversation, setConversation] = React.useState(auth.currentUser.uid
   );
   const [sharedDisorders, setSharedDisorders] = React.useState([]);
+  const [startMessageHack, setStartMessageHack] = React.useState(false);
+  useEffect(() => {
+    sendStartMessage();
+  },[startMessageHack]);
+  
   let messagesRef = firestore.collection(conversation);
   const query = messagesRef.orderBy("createdAt");
   const [messages] = useCollectionData(query, { idField: "id" });
@@ -72,6 +77,7 @@ export default function ChatRoom() {
       .onSnapshot(doc => {
         if (doc.data() !== undefined && doc.data().match !== "") {
           setOtherDisplay(doc.data().otherDisplay);
+          setStartMessageHack(true);
           setConversation(
             auth.currentUser.uid.concat(
               "-",
@@ -148,11 +154,13 @@ export default function ChatRoom() {
   };
 
   const sendStartMessage = async ()  => {
+    console.log("sendstartm111essage")
     if(!historyMessageRef)
     {
+      console.log("sendstartmessage")
       let stringDisorders = sharedDisorders
       await messagesRef.add({
-        text: "You have matched because you both selected " + sharedDisorders.toString().replaceAll(',', ', '),
+        text: "You have both matched with each other because you both selected " + sharedDisorders.toString().replaceAll(',', ', '),
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         uid: "System",
         username: "System",
@@ -324,7 +332,7 @@ export default function ChatRoom() {
               }
             });
             matchmakeRef.doc(doc.id).delete();
-            sendStartMessage();
+            
           }
           
         });

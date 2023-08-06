@@ -19,6 +19,7 @@ const firestore = firebase.firestore();
 
 export default function ChatRoom() {
   const randomId = Date.now();
+  
   const [otherDisplay, setOtherDisplay] = React.useState("");
   const [conversation, setConversation] = React.useState(
     auth.currentUser.uid.concat("-")
@@ -92,6 +93,7 @@ export default function ChatRoom() {
       firestore.collection("matchmaking").doc(auth.currentUser.uid).delete();
     });
     console.log("time to fetch");
+    matchmake();
   }, []);
   // useEffect(() => {
   //     window.onbeforeunload = () => handler();
@@ -116,6 +118,7 @@ export default function ChatRoom() {
     });
   };
 
+  
   return (
     <Box sx={{ display: "flex" }}>
       <NavBar />
@@ -123,20 +126,23 @@ export default function ChatRoom() {
       <ChatWindow />
       <UserControls />
     </Box>
-  );
+  
 
-  {
-    /*      <div>
-                {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-            </div>
-            <form onSubmit={sendMessage}>
-                <input type="text" ref={inputRef}/>
-                <button type="submit">Send</button>
-            </form> 
-            {true && <button onClick={()=>sendReport("test")}>report</button>}
-            {true && <button onClick={getChats}>load chat</button>}
-            {true && <button onClick={getGpt}>gpt</button>} */
-  }
+  // <div>
+  //     <div>
+  //             {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+  //         </div>
+  //         <form onSubmit={sendMessage}>
+  //             <input type="text" ref={inputRef}/>
+  //             <button type="submit">Send</button>
+  //         </form> 
+  //         {true && <button onClick={()=>sendReport("test")}>report</button>}
+  //         {true && <button onClick={getChats}>load chat</button>}
+  //         {true && <button onClick={getGpt}>gpt</button>} 
+  // </div>
+      
+        
+  )
 
   function saveChat(chatid) {
     console.log("ran");
@@ -168,34 +174,45 @@ export default function ChatRoom() {
       });
     });
   }
-  function getGpt() {
-    const options = {
-      method: "POST",
-      body: JSON.stringify({
-        prompt: genPrompt(),
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+  function getGpt(){
+    console.log(commonDisorder)
+    const options ={
+        method: "POST",
+        body: JSON.stringify({
+            prompt: genPrompt(),
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }
     fetch("http://localhost:3001/api", options)
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-      });
-    console.log(stringifyConvo(messages));
-    let test = genPrompt();
-    console.log(test);
-  }
+        .then((res) => res.json()).then((data)=>{
+            console.log( data)
+            const {uid} = auth.currentUser;
+            messagesRef.add({
+                text: data.message,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                uid: "ChatGPT",
+                username: "Therapal",
+            });
+        })
+
+
+}
 
   function genPrompt() {
     return (
-      "The following is a transcript of an ongoing conversation between 2 people struggling with " +
-      commonDisorder +
-      ". " +
-      "Contribute meaningfully to the conversation by asking 1 or 2 questions. Each question should be no more than 2 sentences in length \n" +
-      stringifyConvo(messages)
-    );
+      [{
+          role:"system", content: "You are going to pretend to be Therapal. Therapal is a therapist that is helping 2 people who struggle with " + commonDisorder + ". " 
+          + " These 2 people are having a conversation about their struggles. Start every message with \"Therapal:\"",
+          role: "user", content: " Help these 2 people by asking 1 or 2 questions relevent to their struggles and experiences. Each question should be no more than 2 sentences in length." 
+          + " A transcript of the current conversation is available below. If applicable, specify who you are speaking to. Do not respond to messages from Therapal. For example: \n\n " 
+          + "Therapal: [Your responses here] " + stringifyConvo(messages)
+      } ]
+      // "The following is a transcript of an ongoing conversation between 2 people struggling with " + commonDisorder + ". " +
+      // "Contribute meaningfully to the conversation by asking 1 or 2 questions. Each question should be no more than 2 sentences in length \n"
+      // + stringifyConvo(messages)
+    )
   }
   function stringifyConvo(convo) {
     let string = "";

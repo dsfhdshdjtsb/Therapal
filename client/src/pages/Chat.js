@@ -134,13 +134,16 @@ export default function ChatRoom() {
     });
   };
   const sendLeftMessage = async ()  => {
-    const { uid } = auth.currentUser;
-    await messagesRef.add({
-      text: "Other user has left the chat",
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      uid,
-      username: "System",
-    });
+    if(!messagesRef)
+    {
+      const { uid } = auth.currentUser;
+      await messagesRef.add({
+        text: "Other user has left the chat",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        uid,
+        username: "System",
+      });
+    }
   };
 
   return (

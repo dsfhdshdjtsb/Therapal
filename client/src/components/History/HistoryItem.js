@@ -1,9 +1,10 @@
 import React from "react";
 import HistoryCard from "./HistoryCard";
 import { Grid, Typography, Button } from "@mui/material";
+import { Link } from "react-router-dom";
 export default function HistoryItem(props) {
   return (
-    <HistoryCard name={props.name} width={props.width} height={props.height}>
+    <HistoryCard name={props.name} width={props.width} height={props.height} >
       <Grid item xs={12} sx={{margin: "5% 5% 5% 0"}}>
         <Typography
           variant="body1"
@@ -13,7 +14,7 @@ export default function HistoryItem(props) {
         </Typography>
       </Grid>
       <Grid item xs={12} sx={{margin: "1% 0 1% 0"}}>
-        <Button
+      <Link to="/chat" state={{ historyMessageRef: props.historyRef}}><Button
           variant="contained"
           sx={{
             bgcolor: "primary.main",
@@ -22,6 +23,7 @@ export default function HistoryItem(props) {
         >
           View Chat
         </Button>
+        </Link>
       </Grid>
     </HistoryCard>
   );

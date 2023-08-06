@@ -35,10 +35,10 @@ async function runCompletion(messages){
 app.use(cors({
     origin: "*"
 }))
-// app.get("/api", (req, res) => {
-//     res.json({ message: "Hello from server!" });
-//     console.log(req)
-//   });
+app.get("/api", (req, res) => {
+    res.json({ message: "Hello from server!" });
+    console.log(req)
+  });
 app.post("/api", jsonParser, (req, res) => {
   const { prompt } = req.body;
   console.log(prompt)

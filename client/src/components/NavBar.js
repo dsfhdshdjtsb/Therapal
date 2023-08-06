@@ -25,14 +25,18 @@ export default function NavBar() {
         >
           TheraPal
         </Typography>
-        <Stack direction="row" spacing={4} sx={{ flexGrow: 8 }}>
-          <Link to="/">
-            <NavBarButton>Home</NavBarButton>
-          </Link>
-          <Link to="/history">
-            <NavBarButton>History</NavBarButton>
-          </Link>
-        </Stack>
+        
+        {auth.currentUser && (
+          <Stack direction="row" spacing={4} sx={{ flexGrow: 8 }}>
+            <Link to="/">
+              <NavBarButton>Home</NavBarButton>
+            </Link>
+            <Link to="/history">
+              <NavBarButton>History</NavBarButton>
+            </Link>
+          </Stack>
+        )}
+
         {auth.currentUser && (
           <Stack direction="row" spacing={4} sx={{ flexGrow: 1 }}>
             <NavBarButton

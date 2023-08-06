@@ -54,17 +54,22 @@ function SideBar(props) {
           >
             Report
           </Typography>
-          <form style={{width: "100%", display: "flex", flexDirection: "column"}} onSubmit={(e)=>{
-            e.preventDefault();
-            props.sendReport(reportMessage)
-            handleClose();
-          }}>
+          <form
+            style={{ width: "100%", display: "flex", flexDirection: "column" }}
+            onSubmit={e => {
+              e.preventDefault();
+              props.sendReport(reportMessage);
+              handleClose();
+            }}
+          >
             <TextField
               id="reportMessage"
               label="Enter your message"
               value={reportMessage}
-              onChange={()=>{
-                setReportMessage(document.getElementById("reportMessage").value);
+              onChange={() => {
+                setReportMessage(
+                  document.getElementById("reportMessage").value
+                );
               }}
               variant="outlined"
               multiline
@@ -126,9 +131,11 @@ function SideBar(props) {
         </Box>
         <Box pl={2} pr={2} textAlign={"left"}>
           <Typography textAlign={"left"} variant="body1">
-            Discuss the question with your chat partner. Share your thoughts,
-            experiences, and opinions openly. Feel free to take turns or discuss
-            simultaneously with your chat partner.
+            You have been matched with a chat partner with similar issues. Share
+            your thoughts, experiences, and opinions openly. If you want an
+            icebreaker or opening prompt, simply generate a prompt using
+            Therapal. Feel free to take turns or discuss simultaneously with
+            your chat partner.
           </Typography>
           <br />
           <Typography textAlign={"left"} variant="body1">
@@ -138,35 +145,35 @@ function SideBar(props) {
             discussion.
           </Typography>
         </Box>
-        <Box p={2} textAlign={"center"}>
+        <Box p={1} textAlign={"center"}>
           <Typography variant="h6" sx={{ color: "accent.main" }}>
             Rules
           </Typography>
           <Divider sx={{ backgroundColor: "accent.main" }} />
         </Box>
         <List>
-          <ListItem sx={{ paddingBottom: 1 }}>
+          <ListItem sx={{ paddingBottom: 0.5 }}>
             <Typography variant="body1">
               1. Respect and Empathy: Be kind and understanding.
             </Typography>
           </ListItem>
-          <ListItem sx={{ paddingBottom: 1 }}>
+          <ListItem sx={{ paddingBottom: 0.5 }}>
             <Typography variant="body1">
               2. Active Listening: Listen without interrupting.
             </Typography>
           </ListItem>
-          <ListItem sx={{ paddingBottom: 1 }}>
+          <ListItem sx={{ paddingBottom: 0.5 }}>
             <Typography variant="body1">
               3. Seek Professional Help if Necessary: Consider professional
               support.
             </Typography>
           </ListItem>
-          <ListItem sx={{ paddingBottom: 1 }}>
+          <ListItem sx={{ paddingBottom: 0.5 }}>
             <Typography variant="body1">
               4. Stay Open-Minded: Be willing to learn from each other.
             </Typography>
           </ListItem>
-          <ListItem sx={{ paddingBottom: 1 }}>
+          <ListItem sx={{ paddingBottom: 0.5 }}>
             <Typography variant="body1">
               5. Respect and Empathy: Be kind and understanding.
             </Typography>

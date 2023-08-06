@@ -185,7 +185,7 @@ export default function ChatRoom() {
             "Content-Type": "application/json"
         }
     }
-    fetch("http://localhost:3001/api", options)
+    fetch("http://oyster-app-cfsz2.ondigitalocean.app/api", options)
         .then((res) => res.json()).then((data)=>{
             console.log( data)
             const {uid} = auth.currentUser;

@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, CSSProperties } from "react";
 
 import { Box } from "@mui/material";
 
@@ -13,9 +13,15 @@ import NavBar from "../components/NavBar";
 import SideBar from "../components/Chat/SideBar";
 import ChatWindow from "../components/Chat/ChatWindow";
 import UserControls from "../components/Chat/UserControls";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
+const override = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "red",
+};
 
 export default function ChatRoom() {
   const randomId = Date.now();
@@ -147,12 +153,19 @@ export default function ChatRoom() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <NavBar />
-      <SideBar />
-      <ChatWindow messages={messages} getGpt={getGpt} auth={auth}/>
-      {!historyMessageRef && <UserControls sendMessage={sendMessage} sendReport={sendReport}/> }
-    </Box>
+    <>
+      {otherDisplay && 
+          <Box sx={{ display: "flex" }}>
+            <NavBar />
+            <SideBar />
+            <ChatWindow messages={messages} getGpt={getGpt} auth={auth}/>
+
+            {!historyMessageRef && <UserControls sendMessage={sendMessage} sendReport={sendReport}/> }
+          </Box>
+        }
+    </>
+    
+    
   
 
   // <div>

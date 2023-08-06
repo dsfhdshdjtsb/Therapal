@@ -35,7 +35,7 @@ function ChatWindow(props) {
         sx={{
           flexGrow: 1,
           overflowY: "auto",
-          height: "82vh",
+          height: props.height,
           scrollBehavior: "auto",
         }}
       >

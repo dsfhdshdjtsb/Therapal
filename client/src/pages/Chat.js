@@ -145,15 +145,18 @@ export default function ChatRoom() {
       });
     }
   };
-
+// otherDisplay: display name of other person, means you have matchmaked
+// historyMessageRef: came from history
+// if you matchmade with someone, height = 82vh but if you enter from history, height = 100vh
   return (
     <>
-      
+    
           <Box sx={{ display: "flex" }}>
             <NavBar />
             <SideBar />
-            {(otherDisplay || historyMessageRef) ? <ChatWindow messages={messages} getGpt={getGpt} auth={auth}/> : <div className="Loading"> <PulseLoader color={"#7FFFD4"} size={10} /></div>}
-
+            {!otherDisplay && !historyMessageRef && <div className="Loading"> <PulseLoader color={"#7FFFD4"} size={10} /></div> }
+            {!otherDisplay && historyMessageRef && <ChatWindow height={"100vh"} messages={messages} getGpt={getGpt} auth={auth}/>}
+            {otherDisplay && !historyMessageRef && <ChatWindow height={"82vh"} messages={messages} getGpt={getGpt} auth={auth}/> }
             {otherDisplay && !historyMessageRef && <UserControls sendMessage={sendMessage} sendReport={sendReport}/> }
           </Box>
           :

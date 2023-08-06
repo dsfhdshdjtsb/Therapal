@@ -31,6 +31,7 @@ export default function ChatRoom() {
   useEffect(() => {
     sendStartMessage();
   },[startMessageHack]);
+  
   let messagesRef = firestore.collection(conversation);
   const query = messagesRef.orderBy("createdAt");
   const [messages] = useCollectionData(query, { idField: "id" });

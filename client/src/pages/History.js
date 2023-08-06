@@ -9,6 +9,8 @@ import firebase from "../firebase";
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
+
+
 export default function History() {
   const md = useMediaQuery(theme=>theme.breakpoints.up("md"));
   const lg = useMediaQuery(theme=>theme.breakpoints.up("xl"));

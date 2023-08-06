@@ -7,8 +7,6 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import Test from "./components/test";
 
 import firebase from "./firebase";
 import { ThemeProvider } from "@emotion/react";
@@ -34,13 +32,11 @@ const theme = createTheme({
 });
 
 export default function App() {
-  const [user] = useAuthState(auth);
-
+  const [user] = useAuthState(auth);  
   return (
     <ThemeProvider theme={theme}>
       <Routes>
         <Route exact path="/" element={<HomePage />} />
-        <Route path="/signin" element={<SignIn />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/history" element={<History />} />
       </Routes>

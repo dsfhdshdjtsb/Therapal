@@ -49,6 +49,10 @@ export default function PromptBar(props) {
             borderRadius: "16px",
             margin: "1% auto",
           }}
+          onClick={() => {
+            console.log("clicked");
+            props.genPrompt();
+          }}
         >
           Generate new prompt
         </Button>

@@ -1,8 +1,7 @@
 import React from "react";
 import HomePage from "./pages/HomePage";
 import { Route, Routes } from "react-router-dom";
-import Test1 from "./components/test1";
-import ChatRoom from "./pages/Chat";
+
 
 import "firebase/compat/auth";
 import "firebase/compat/firestore";

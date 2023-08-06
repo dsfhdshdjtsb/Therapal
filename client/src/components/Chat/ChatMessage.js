@@ -3,7 +3,6 @@ import { Box, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export default function ChatMessage(props) {
-  console.log(props.sent);
   let messageStyles = {};
   let textStyle = {
     borderRadius: "10px",

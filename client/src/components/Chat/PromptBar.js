@@ -8,15 +8,16 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import React from "react";
 
-export default function PromptBar() {
+export default function PromptBar(props) {
   return (
-    <Accordion disableGutters={true} sx={{backgroundColor: "primary.main"}}>
+    <Accordion disableGutters={true} sx={{ backgroundColor: "primary.main", position:"fixed", left: "18vw", width:"82%"}}>
       <AccordionSummary
         sx={{
           [`& .MuiAccordionSummary-content`]: {
+            marginTop: "2%",
             marginBottom: "5px",
-            display:"flex", 
-            justifyContent: "center"
+            display: "flex",
+            justifyContent: "center",
           },
           borderRight: 1,
           borderColor: "secondary.main",
@@ -27,12 +28,19 @@ export default function PromptBar() {
           Your Prompt
         </Typography>
       </AccordionSummary>
-      <AccordionDetails sx={{ display: "flex", flexDirection: "column", borderRight: 1, borderColor: "secondary.main" }}>
+      <AccordionDetails
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          borderRight: 1,
+          borderColor: "secondary.main",
+        }}
+      >
         <Typography variant="subtitle1" textAlign={"center"}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
           malesuada lacus ex, sit amet blandit leo lobortis eget.
         </Typography>
-        <Button 
+        <Button
           variant="contained"
           sx={{
             position: "relative",

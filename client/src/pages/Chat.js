@@ -107,24 +107,22 @@ export default function ChatRoom() {
   //       document.removeEventListener('beforeunload', handler);
   //     };
   //   });
-  const sendMessage = async e => {
-    e.preventDefault();
+  const sendMessage = async (text)  => {
     const { uid } = auth.currentUser;
     await messagesRef.add({
-      text: inputRef.current.value,
+      text,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       uid,
       username: myDisplay,
     });
   };
 
-  
   return (
     <Box sx={{ display: "flex" }}>
       <NavBar />
       <SideBar />
-      <ChatWindow />
-      <UserControls />
+      <ChatWindow messages={messages} genPrompt={genPrompt} auth={auth}/>
+      <UserControls sendMessage={sendMessage} sendReport={sendReport}/>
     </Box>
   
 
@@ -139,10 +137,9 @@ export default function ChatRoom() {
   //         {true && <button onClick={()=>sendReport("test")}>report</button>}
   //         {true && <button onClick={getChats}>load chat</button>}
   //         {true && <button onClick={getGpt}>gpt</button>} 
-  // </div>
-      
-        
+  // </div>    
   )
+  
 
   function saveChat(chatid) {
     console.log("ran");
@@ -167,13 +164,6 @@ export default function ChatRoom() {
     }
   }
 
-  function callback() {
-    getChats().then(chats => {
-      chats.forEach(chat => {
-        loadChat(chat);
-      });
-    });
-  }
   function getGpt(){
     console.log(commonDisorder)
     const options ={
@@ -299,16 +289,7 @@ export default function ChatRoom() {
     }
   }
 
-  function ChatMessage(props) {
-    const { text, username, uid } = props.message;
-    const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
-    return (
-      <div className={`message ${messageClass}`}>
-        <p>{username}</p>
-        <p>{text}</p>
-      </div>
-    );
-  }
+
 
   function sendReport(reasoning) {
     firestore.collection("reports").doc(auth.currentUser.uid).set({

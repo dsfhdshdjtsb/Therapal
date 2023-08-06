@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, TextField } from "@mui/material";
 
-function UserControls() {
+function UserControls(props) {
   const [message, setMessage] = React.useState("");
 
   return (
@@ -62,6 +62,7 @@ function UserControls() {
           borderRadius: "16px",
           margin: "5px 0 0 2%",
         }}
+        onClick={()=>{props.sendMessage(message)}}
       >
         Send (Enter)
       </Button>

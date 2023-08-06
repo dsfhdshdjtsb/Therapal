@@ -6,13 +6,15 @@ import ChatMessage from "./ChatMessage";
 
 function ChatWindow(props) {
   const scrollDiv = useRef();
-  const [prompt, setPrompt] = React.useState("Test");
+  const [prompt, setPrompt] = React.useState(null);
   useEffect(()=>{
     if (props.messages && props.messages.length > 0){
       console.log(props.messages[props.messages.length-1].t)
       if (props.messages[props.messages.length-1].uid === "ChatGPT"){
         setPrompt(props.messages[props.messages.length-1].text);
       }
+    }else if(prompt === null){
+      
     }
   }, [props.messages])
 

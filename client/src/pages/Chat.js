@@ -47,6 +47,10 @@ export default function ChatRoom() {
   useEffect(() => {
     console.log(conversation);
     saveChat(conversation);
+    return () => {
+      firestore.collection("matchmaking").doc(auth.currentUser.uid).delete();
+      sendLeftMessage();
+    }
   }, [conversation]);
 
   useEffect(() => {
@@ -93,7 +97,6 @@ export default function ChatRoom() {
       });
     window.addEventListener("beforeunload", event => {
       firestore.collection("matchmaking").doc(auth.currentUser.uid).delete();
-      sendLeftMessage();
     });
     console.log("time to fetch");
 

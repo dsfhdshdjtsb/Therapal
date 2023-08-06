@@ -1,6 +1,6 @@
 import React from "react";
 import { AppBar, Stack, Toolbar, Typography } from "@mui/material";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { Link } from "react-router-dom";
 import NavBarButton from "./NavBarButton";
 import firebase from "../firebase";
 import "firebase/compat/auth";
@@ -15,7 +15,11 @@ const auth = firebase.auth();
 
 export default function NavBar() {
   return (
-    <AppBar color="secondary" position="fixed" sx={{ boxShadow: 2, zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+    <AppBar
+      color="secondary"
+      position="fixed"
+      sx={{ boxShadow: 2, zIndex: theme => theme.zIndex.drawer + 1 }}
+    >
       <Toolbar sx={{ height: "7vh" }}>
         <Typography
           variant="h4"
@@ -26,8 +30,9 @@ export default function NavBar() {
         </Typography>
         <Stack direction="row" spacing={4} sx={{ flexGrow: 8 }}>
           <NavBarButton>Home</NavBarButton>
-          <NavBarButton>History</NavBarButton>
-          <NavBarButton>Settings</NavBarButton>
+          <Link to="/history">
+            <NavBarButton>History</NavBarButton>
+          </Link>
         </Stack>
         {auth.currentUser && (
           <Stack direction="row" spacing={4} sx={{ flexGrow: 1 }}>

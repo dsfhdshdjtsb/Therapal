@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, CSSProperties } from "react";
 
 import { Box } from "@mui/material";
 
@@ -13,15 +13,20 @@ import NavBar from "../components/NavBar";
 import SideBar from "../components/Chat/SideBar";
 import ChatWindow from "../components/Chat/ChatWindow";
 import UserControls from "../components/Chat/UserControls";
+import PulseLoader from "react-spinners/PulseLoader";
+import "../index.css"
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
+
 
 export default function ChatRoom() {
   const randomId = Date.now();
 
   const [otherDisplay, setOtherDisplay] = React.useState("");
-  const [conversation, setConversation] = React.useState(auth.currentUser.uid);
+  const [conversation, setConversation] = React.useState(auth.currentUser.uid
+  );
+  const [sharedDisorders, setSharedDisorders] = React.useState([]);
   let messagesRef = firestore.collection(conversation);
   const query = messagesRef.orderBy("createdAt");
   const [messages] = useCollectionData(query, { idField: "id" });
@@ -41,6 +46,8 @@ export default function ChatRoom() {
       myDisorders.push(key);
     }
   });
+  console.log("mydisorders")
+  console.log(myDisorders)
 
   useEffect(() => {
     console.log(conversation);
@@ -77,9 +84,9 @@ export default function ChatRoom() {
           console.log("saving chat+ " + conversation);
           messagesRef.doc(auth.currentUser.uid).delete();
 
-          doc.data().disorders.forEach(disorder => {
+          doc.data().otherDisorders.forEach(disorder => {
             if (myDisorders.includes(disorder)) {
-              commonDisorder = disorder;
+              setSharedDisorders(prev => [...prev, disorder]);
             }
           });
           saveChat(
@@ -126,8 +133,9 @@ export default function ChatRoom() {
       username: myDisplay,
     });
   };
-  const sendLeftMessage = async () => {
-    if (!messagesRef) {
+  const sendLeftMessage = async ()  => {
+    if(!historyMessageRef)
+    {
       const { uid } = auth.currentUser;
       await messagesRef.add({
         text: "Other user has left the chat",
@@ -139,26 +147,37 @@ export default function ChatRoom() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <NavBar />
-      <SideBar sendReport={sendReport} />
-      <ChatWindow messages={messages} getGpt={getGpt} auth={auth} />
-      {!historyMessageRef && <UserControls sendMessage={sendMessage} />}
-    </Box>
+    <>
+      
+          <Box sx={{ display: "flex" }}>
+            <NavBar />
+            <SideBar />
+            {(otherDisplay || historyMessageRef) ? <ChatWindow messages={messages} getGpt={getGpt} auth={auth}/> : <div className="Loading"> <PulseLoader color={"#7FFFD4"} size={10} /></div>}
 
-    // <div>
-    //     <div>
-    //             {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-    //         </div>
-    //         <form onSubmit={sendMessage}>
-    //             <input type="text" ref={inputRef}/>
-    //             <button type="submit">Send</button>
-    //         </form>
-    //         {true && <button onClick={()=>sendReport("test")}>report</button>}
-    //         {true && <button onClick={getChats}>load chat</button>}
-    //         {true && <button onClick={getGpt}>gpt</button>}
-    // </div>
-  );
+            {otherDisplay && !historyMessageRef && <UserControls sendMessage={sendMessage} sendReport={sendReport}/> }
+          </Box>
+          :
+          
+        
+    </>
+    
+    
+  
+
+  // <div>
+  //     <div>
+  //             {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+  //         </div>
+  //         <form onSubmit={sendMessage}>
+  //             <input type="text" ref={inputRef}/>
+  //             <button type="submit">Send</button>
+  //         </form> 
+  //         {true && <button onClick={()=>sendReport("test")}>report</button>}
+  //         {true && <button onClick={getChats}>load chat</button>}
+  //         {true && <button onClick={getGpt}>gpt</button>} 
+  // </div>    
+  )
+  
 
   function saveChat(chatid) {
     let date = new Date();
@@ -185,17 +204,16 @@ export default function ChatRoom() {
     }
   }
 
-  async function getGpt() {
-    console.log(commonDisorder);
-    const options = {
-      method: "POST",
-      body: JSON.stringify({
-        prompt: genPrompt(),
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+  async function getGpt(){
+    const options ={
+        method: "POST",
+        body: JSON.stringify({
+            prompt: genPrompt(),
+        }),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }
     fetch("https://oyster-app-cfsz2.ondigitalocean.app/api/api", options) //change something on digital ocean to fix this but not my problem
       .then(res => res.json())
       .then(data => {
@@ -210,21 +228,18 @@ export default function ChatRoom() {
   }
 
   function genPrompt() {
-    return [
-      {
-        // role:"system", content: "You are Therapal. Therapal looks at a conversation between 2 people who struggle with" + commonDisorder
-        // + " and generates 1 question to foster discussion between the 2 conversation members. Therapal starts every message with \"Therapal:\".For example, your"
-        // + "response should follow this format: Therapal: [Your responses here]. Therapal does not immitate the conversation members."
-        // + " Therapal does not respond to messages from other Therapals. Therapal does not respond to messages from itself.",
-        role: "user",
-        content:
-          ' You are Therapal. Therapal looks at a conversation between 2 people who struggle with depression and generates 1 question to foster discussion between the 2 conversation members. Therapal starts every message with "Therapal:". For example, your response should follow this format: Therapal: [Your responses here].. Therapal does not respond to messages from other Therapals. Therapal does not respond to messages from itself. Therapal tries to relate conversation members with each other. If either conversation member has not talked in a while, Therapal directs a question an extra question at them to bring them back into the conversation. Attached is transcript of an ongoing conversation. Contribute meaningfully to the conversation by asking 1 questions. The question should not be more than 3 sentences. If the following conversation is blank, ask a question to initiate a discussion\n' +
-          stringifyConvo(messages),
-      },
-    ];
-    // "The following is a transcript of an ongoing conversation between 2 people struggling with " + commonDisorder + ". " +
-    // "Contribute meaningfully to the conversation by asking 1 or 2 questions. Each question should be no more than 2 sentences in length \n"
-    // + stringifyConvo(messages)
+    return (
+      [{
+          // role:"system", content: "You are Therapal. Therapal looks at a conversation between 2 people who struggle with" + commonDisorder
+          // + " and generates 1 question to foster discussion between the 2 conversation members. Therapal starts every message with \"Therapal:\".For example, your" 
+          // + "response should follow this format: Therapal: [Your responses here]. Therapal does not immitate the conversation members." 
+          // + " Therapal does not respond to messages from other Therapals. Therapal does not respond to messages from itself.",
+          role: "user", content: " You are Therapal. Therapal looks at a conversation between 2 people who struggle with"+ JSON.stringify(sharedDisorders) + "and generates 1 question to foster discussion between the 2 conversation members. Therapal starts every message with \"Therapal:\". For example, your response should follow this format: Therapal: [Your responses here].. Therapal does not respond to messages from other Therapals. Therapal does not respond to messages from itself. Therapal tries to relate conversation members with each other. If either conversation member has not talked in a while, Therapal directs a question an extra question at them to bring them back into the conversation. Attached is transcript of an ongoing conversation. Contribute meaningfully to the conversation by asking 1 questions. The question should not be more than 3 sentences. If the following conversation is blank, ask a question to initiate a discussion\n" + stringifyConvo(messages)
+      } ]
+      // "The following is a transcript of an ongoing conversation between 2 people struggling with " + commonDisorder + ". " +
+      // "Contribute meaningfully to the conversation by asking 1 or 2 questions. Each question should be no more than 2 sentences in length \n"
+      // + stringifyConvo(messages)
+    )
   }
   function stringifyConvo(convo) {
     let string = "";
@@ -260,6 +275,7 @@ export default function ChatRoom() {
               disorders: myDisorders,
               randomId: randomId,
               myDisplay: auth.currentUser.displayName,
+              otherDisorders: [],
               otherDisplay: "",
               match: "",
             });
@@ -278,14 +294,14 @@ export default function ChatRoom() {
               {
                 match: auth.currentUser.uid,
                 otherDisplay: auth.currentUser.displayName,
+                otherDisorders: myDisorders,
               },
               { merge: true }
             );
 
             doc.data().disorders.forEach(disorder => {
               if (myDisorders.includes(disorder)) {
-                commonDisorder = disorder;
-                console.log("commonDisorder= " + commonDisorder);
+                setSharedDisorders(prev => [...prev, disorder]);
               }
             });
 

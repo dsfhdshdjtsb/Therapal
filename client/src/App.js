@@ -15,7 +15,7 @@ import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
 import Chat from "./pages/Chat";
 import History from "./pages/History";
-
+import "./index.css"
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 

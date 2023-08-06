@@ -183,7 +183,7 @@ export default function ChatRoom() {
           {
             saved: firebase.firestore.FieldValue.arrayUnion({
               other: otherDisplay,
-              time: date,
+              time: date.toString(),
               chatid: chatid,
             }),
           },

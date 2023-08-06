@@ -29,7 +29,7 @@ export default function History() {
       <Box display={"flex"} flexWrap={"wrap"} padding={"2%"}>
         {history.map(chat => <HistoryItem
           name={chat.other}
-          // date={chat.time ? chat.time : "No date"}
+          date={chat.time}
           width="12%"
           height="15vh">
         </HistoryItem>)}

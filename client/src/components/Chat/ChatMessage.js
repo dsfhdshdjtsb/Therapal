@@ -9,7 +9,7 @@ export default function ChatMessage(props) {
     padding: "7px 12px 7px 12px",
     margin: "0 10px 20px 10px",
     maxWidth: "80%",
-    wordBreak:"break-all",
+    wordBreak:"break-word",
   };
   if (props.sent) {
     messageStyles = {

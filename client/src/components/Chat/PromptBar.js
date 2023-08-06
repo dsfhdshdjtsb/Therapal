@@ -51,7 +51,7 @@ export default function PromptBar(props) {
           }}
           onClick={() => {
             console.log("clicked");
-            props.genPrompt();
+            props.getGpt();
           }}
         >
           Generate new prompt

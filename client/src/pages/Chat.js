@@ -121,9 +121,8 @@ export default function ChatRoom() {
     <Box sx={{ display: "flex" }}>
       <NavBar />
       <SideBar />
-      <ChatWindow messages={messages} genPrompt={genPrompt} auth={auth}/>
-      <UserControls sendMessage={sendMessage} sendReport={sendReport}/>
-      <button onClick={getGpt}>getGpt</button>
+      <ChatWindow messages={messages} getGpt={getGpt} auth={auth}/>
+      <UserControls sendMessage={sendMessage} sendReport={sendReport}/>>
     </Box>
   
 

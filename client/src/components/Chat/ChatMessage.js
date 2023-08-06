@@ -8,8 +8,8 @@ export default function ChatMessage(props) {
   let textStyle = {
     borderRadius: "10px",
     padding: "7px",
-    margin: "0 10px 25px 10px",
-    maxWidth: "90%",
+    margin: "0 10px 20px 10px",
+    maxWidth: "80%",
   };
   if (props.sent) {
     messageStyles = {
@@ -23,6 +23,7 @@ export default function ChatMessage(props) {
     };
     textStyle = { ...textStyle, backgroundColor: "#D3D3D3" };
   }
+
 
   return (
     <React.Fragment>

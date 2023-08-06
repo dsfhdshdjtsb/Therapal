@@ -14,8 +14,14 @@ function ChatWindow() {
           sent={false}
           text="Maecenas at felis non turpis scelerisque gravida."
         />
-        <ChatMessage sent={false} text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at felis non turpis scelerisque gravida" />
-        <ChatMessage sent={true} text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at felis non turpis scelerisque gravida. Suspendisse potenti. Proin sodales arcu id nunc tempus porttitor. Sed scelerisque justo nec tempus pulvinar. Cras faucibus vulputate sapien, sit amet scelerisque justo mollis vitae. Sed id fringilla felis. Cras venenatis mi non mauris consequat, pharetra elementum dui rhoncus. Integer dictum urna eu ultricies tincidunt. Maecenas placerat magna ut tortor auctor, nec tempor nibh finibus." />
+        <ChatMessage
+          sent={false}
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at felis non turpis scelerisque gravida"
+        />
+        <ChatMessage
+          sent={true}
+          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at felis non turpis scelerisque gravida. Suspendisse potenti. Proin sodales arcu id nunc tempus porttitor. Sed scelerisque justo nec tempus pulvinar. Cras faucibus vulputate sapien, sit amet scelerisque justo mollis vitae. Sed id fringilla felis. Cras venenatis mi non mauris consequat, pharetra elementum dui rhoncus. Integer dictum urna eu ultricies tincidunt. Maecenas placerat magna ut tortor auctor, nec tempor nibh finibus."
+        />
       </Box>
     </Box>
   );

@@ -187,7 +187,7 @@ export default function ConfigureChat() {
         {}
         {user ? (
           !banned ? (
-            <Link to="/test" state={{...selectedTraits, displayName: displayName}}>
+            <Link to="/chat" state={{...selectedTraits, displayName: displayName}}>
               <Button //!banned and signed in
                 variant="contained"
                 sx={{
@@ -203,7 +203,7 @@ export default function ConfigureChat() {
             </Link>
           ) : (
             <Button
-              disabled //banned and signed in
+              disabled 
               variant="contained"
               sx={{
                 bgcolor: "primary.main",

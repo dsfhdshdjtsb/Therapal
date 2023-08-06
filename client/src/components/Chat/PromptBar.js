@@ -14,7 +14,6 @@ export default function PromptBar(props) {
       <AccordionSummary
         sx={{
           [`& .MuiAccordionSummary-content`]: {
-            marginTop: "2%",
             marginBottom: "5px",
             display: "flex",
             justifyContent: "center",

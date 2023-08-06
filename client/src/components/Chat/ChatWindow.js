@@ -25,7 +25,7 @@ function ChatWindow(props) {
         }}
       >
         <Toolbar />
-        <PromptBar />
+        <PromptBar genPrompt={props.genPrompt}/>
         <Box p={"4% 2% 2% 2%"} display={"flex"} flexDirection={"column"}>
           {props.messages && props.messages.map(msg => renderMessage(msg))}
           <div ref={scrollDiv}></div>

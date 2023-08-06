@@ -27,10 +27,10 @@ export default function ChatMessage(props) {
 
   return (
     <React.Fragment>
-      <Box display="flex" sx={messageStyles} padding="0 3% 0 3%" key={props.id}>
+      <Box display="flex" sx={messageStyles} padding="0 3% 0 3%">
         <Typography variant="body1" sx={{fontWeight: "light", fontSize: "0.8rem"}}>{props.name}</Typography>
       </Box>
-      <Box display="flex" sx={messageStyles}>
+      <Box display="flex" sx={messageStyles} >
         <AccountCircleIcon fontSize="large" color="accent" />
         <Typography variant="body1" sx={textStyle}>
           {props.text}

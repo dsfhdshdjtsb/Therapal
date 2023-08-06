@@ -14,6 +14,7 @@ import firebase from "./firebase";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
 import Chat from "./pages/Chat";
+import History from "./pages/History";
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
@@ -41,6 +42,7 @@ export default function App() {
         <Route exact path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/history" element={<History />} />
       </Routes>
       {/* <div>
             {user ? <ChatRoom /> : <SignIn />}

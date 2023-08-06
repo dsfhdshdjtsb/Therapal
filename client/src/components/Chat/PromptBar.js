@@ -7,10 +7,21 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import React from "react";
+import { useState } from "react";
 
 export default function PromptBar(props) {
+  const [prompt, setPrompt] = useState("");
+
   return (
-    <Accordion disableGutters={true} sx={{ backgroundColor: "primary.main", position:"fixed", left: "18vw", width:"82%"}}>
+    <Accordion
+      disableGutters={true}
+      sx={{
+        backgroundColor: "primary.main",
+        position: "fixed",
+        left: "18vw",
+        width: "82%",
+      }}
+    >
       <AccordionSummary
         sx={{
           [`& .MuiAccordionSummary-content`]: {
@@ -35,9 +46,8 @@ export default function PromptBar(props) {
           borderColor: "secondary.main",
         }}
       >
-        <Typography variant="subtitle1" textAlign={"center"}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-          malesuada lacus ex, sit amet blandit leo lobortis eget.
+        <Typography value={prompt} variant="subtitle1" textAlign={"center"}>
+          {prompt}
         </Typography>
         <Button
           variant="contained"
@@ -50,8 +60,7 @@ export default function PromptBar(props) {
             margin: "1% auto",
           }}
           onClick={() => {
-            console.log("clicked");
-            props.genPrompt();
+            props.getGpt();
           }}
         >
           Generate new prompt

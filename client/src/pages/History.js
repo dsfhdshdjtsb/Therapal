@@ -37,7 +37,7 @@ export default function History() {
             ></HistoryItem>
           ))
         ) : (
-          <Typography variant="h6" color={"accent.main"}>No history yet!</Typography>
+          <Typography sx={{margin: "auto", vh:"50vh"}} variant="h6" color={"accent.main"}>No history yet!</Typography>
         )}
       </Box>
     </React.Fragment>

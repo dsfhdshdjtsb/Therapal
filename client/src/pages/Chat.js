@@ -167,8 +167,6 @@ export default function ChatRoom() {
       });
     }
   };
-  const md = useMediaQuery(theme=>theme.breakpoints.up("md"));
-  const lg = useMediaQuery(theme=>theme.breakpoints.up("xl"));
   // useEffect(() => {
   //   sendStartMessage();
   // }, [otherDisplay]);

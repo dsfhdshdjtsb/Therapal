@@ -152,7 +152,7 @@ export default function ChatRoom() {
     {
       let stringDisorders = sharedDisorders
       await messagesRef.add({
-        text: auth.currentUser.displayName + ", you have been matched with " + otherDisplay + "." + " You have both selected " + sharedDisorders.toString().replaceAll(',', ', '),
+        text: "You have matched because you both selected " + sharedDisorders.toString().replaceAll(',', ', '),
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         uid: "System",
         username: "System",
@@ -160,9 +160,9 @@ export default function ChatRoom() {
     }
   };
 
-  useEffect(() => {
-    sendStartMessage();
-  }, [otherDisplay]);
+  // useEffect(() => {
+  //   sendStartMessage();
+  // }, [otherDisplay]);
 // otherDisplay: display name of other person, means you have matchmaked
 // historyMessageRef: came from history
 // if you matchmade with someone, height = 82vh but if you enter from history, height = 100vh
@@ -239,7 +239,7 @@ export default function ChatRoom() {
           text: data.message,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           uid: "ChatGPT",
-          username: "Therapal",
+          username: "TheraPal",
         });
       });
   }
@@ -247,11 +247,11 @@ export default function ChatRoom() {
   function genPrompt() {
     return (
       [{
-          // role:"system", content: "You are Therapal. Therapal looks at a conversation between 2 people who struggle with" + commonDisorder
-          // + " and generates 1 question to foster discussion between the 2 conversation members. Therapal starts every message with \"Therapal:\".For example, your" 
-          // + "response should follow this format: Therapal: [Your responses here]. Therapal does not immitate the conversation members." 
-          // + " Therapal does not respond to messages from other Therapals. Therapal does not respond to messages from itself.",
-          role: "user", content: " You are Therapal. Therapal looks at a conversation between 2 people who struggle with"+ JSON.stringify(sharedDisorders) + "and generates 1 question to foster discussion between the 2 conversation members. Therapal starts every message with \"Therapal:\". For example, your response should follow this format: Therapal: [Your responses here].. Therapal does not respond to messages from other Therapals. Therapal does not respond to messages from itself. Therapal tries to relate conversation members with each other. If either conversation member has not talked in a while, Therapal directs a question an extra question at them to bring them back into the conversation. Attached is transcript of an ongoing conversation. Contribute meaningfully to the conversation by asking 1 questions. The question should not be more than 3 sentences. If the following conversation is blank or only contains system messages, ask a question to initiate a discussion\n" + stringifyConvo(messages)
+          // role:"system", content: "You are TheraPal. TheraPal looks at a conversation between 2 people who struggle with" + commonDisorder
+          // + " and generates 1 question to foster discussion between the 2 conversation members. TheraPal starts every message with \"TheraPal:\".For example, your" 
+          // + "response should follow this format: TheraPal: [Your responses here]. TheraPal does not immitate the conversation members." 
+          // + " TheraPal does not respond to messages from other TheraPals. TheraPal does not respond to messages from itself.",
+          role: "user", content: " You are TheraPal. TheraPal looks at a conversation between 2 people who struggle with"+ JSON.stringify(sharedDisorders) + "and generates 1 question to foster discussion between the 2 conversation members. TheraPal starts every message with \"TheraPal:\". For example, your response should follow this format: TheraPal: [Your responses here].. TheraPal does not respond to messages from other TheraPals. TheraPal does not respond to messages from itself. TheraPal tries to relate conversation members with each other. If either conversation member has not talked in a while, TheraPal directs a question an extra question at them to bring them back into the conversation. Attached is transcript of an ongoing conversation. Contribute meaningfully to the conversation by asking 1 questions. The question should not be more than 3 sentences. If the following conversation is blank, only contains system messages, or if this is TheraPal's first message, ask one question to initiate both members in a discussion\n" + stringifyConvo(messages)
       } ]
       // "The following is a transcript of an ongoing conversation between 2 people struggling with " + commonDisorder + ". " +
       // "Contribute meaningfully to the conversation by asking 1 or 2 questions. Each question should be no more than 2 sentences in length \n"
@@ -322,7 +322,9 @@ export default function ChatRoom() {
               }
             });
             matchmakeRef.doc(doc.id).delete();
+            sendStartMessage();
           }
+          
         });
     }
   }

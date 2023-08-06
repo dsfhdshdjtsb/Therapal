@@ -123,6 +123,7 @@ export default function ChatRoom() {
       <SideBar />
       <ChatWindow messages={messages} genPrompt={genPrompt} auth={auth}/>
       <UserControls sendMessage={sendMessage} sendReport={sendReport}/>
+      <button onClick={getGpt}>getGpt</button>
     </Box>
   
 
@@ -193,11 +194,11 @@ export default function ChatRoom() {
   function genPrompt() {
     return (
       [{
-          role:"system", content: "You are going to pretend to be Therapal. Therapal is a therapist that is helping 2 people who struggle with " + commonDisorder + ". " 
-          + " These 2 people are having a conversation about their struggles. Start every message with \"Therapal:\"",
-          role: "user", content: " Help these 2 people by asking 1 or 2 questions relevent to their struggles and experiences. Each question should be no more than 2 sentences in length." 
-          + " A transcript of the current conversation is available below. If applicable, specify who you are speaking to. Do not respond to messages from Therapal. For example: \n\n " 
-          + "Therapal: [Your responses here] " + stringifyConvo(messages)
+          // role:"system", content: "You are Therapal. Therapal looks at a conversation between 2 people who struggle with" + commonDisorder
+          // + " and generates 1 question to foster discussion between the 2 conversation members. Therapal starts every message with \"Therapal:\".For example, your" 
+          // + "response should follow this format: Therapal: [Your responses here]. Therapal does not immitate the conversation members." 
+          // + " Therapal does not respond to messages from other Therapals. Therapal does not respond to messages from itself.",
+          role: "user", content: " You are Therapal. Therapal looks at a conversation between 2 people who struggle with depression and generates 1 question to foster discussion between the 2 conversation members. Therapal starts every message with \"Therapal:\". For example, your response should follow this format: Therapal: [Your responses here].. Therapal does not respond to messages from other Therapals. Therapal does not respond to messages from itself. Therapal tries to relate conversation members with each other. If either conversation member has not talked in a while, Therapal directs a question an extra question at them to bring them back into the conversation. Attached is transcript of an ongoing conversation. Contribute meaningfully to the conversation by asking 1 questions. The question should not be more than 3 sentences. If the following conversation is blank, ask a question to initiate a discussion\n" + stringifyConvo(messages)
       } ]
       // "The following is a transcript of an ongoing conversation between 2 people struggling with " + commonDisorder + ". " +
       // "Contribute meaningfully to the conversation by asking 1 or 2 questions. Each question should be no more than 2 sentences in length \n"

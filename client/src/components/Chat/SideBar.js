@@ -153,10 +153,10 @@ function SideBar(props) {
           <Box pl={2} pr={2} textAlign={"left"}>
             <Typography textAlign={"left"} variant="body1">
               You have been matched with a chat partner with similar issues.
-              Share your thoughts, experiences, and opinions openly. If you want
-              an icebreaker or opening prompt, simply generate a prompt using
-              Therapal. Feel free to take turns or discuss simultaneously with
-              your chat partner.
+              Share your thoughts and opinions openly. If you want an opening
+              prompt, simply generate a prompt using TheraPal. Please be patient
+              with the generate prompt button. Try to not press it again until
+              TheraPal has finished processing your conversation.
             </Typography>
             <br />
             <Typography textAlign={"left"} variant="body1">
@@ -196,7 +196,8 @@ function SideBar(props) {
             </ListItem>
             <ListItem sx={{ paddingBottom: 0.5 }}>
               <Typography variant="body1">
-                5. Non-Judgmental Approach: Avoid making judgments or assumptions about each other's experiences
+                5. Non-Judgmental Approach: Avoid making judgments or
+                assumptions about each other's experiences
               </Typography>
             </ListItem>
           </List>

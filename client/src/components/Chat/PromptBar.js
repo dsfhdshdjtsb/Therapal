@@ -10,7 +10,7 @@ import React from "react";
 import { useState } from "react";
 
 export default function PromptBar(props) {
-  const [prompt, setPrompt] = useState("");
+  const [prompt, setPrompt] = useState("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas at felis non turpis scelerisque gravida. Suspendisse potenti. Proin sodales arcu id nunc tempus porttitor. ");
 
   return (
     <Accordion

@@ -144,9 +144,8 @@ export default function ChatRoom() {
     <Box sx={{ display: "flex" }}>
       <NavBar />
       <SideBar />
-      <ChatWindow messages={messages} genPrompt={genPrompt} auth={auth}/>
+      <ChatWindow messages={messages} getGpt={getGpt} auth={auth}/>
       {!historyMessageRef && <UserControls sendMessage={sendMessage} sendReport={sendReport}/> }
-      <button onClick={getGpt}>getGpt</button>
     </Box>
   
 
@@ -234,20 +233,7 @@ export default function ChatRoom() {
     });
     return string;
   }
-  function getChats() {
-    firestore
-      .collection("account")
-      .doc(auth.currentUser.uid)
-      .get()
-      .then(doc => {
-        console.log(doc.data().saved);
-        // return doc.data().saved;
-        doc.data().saved.forEach((chat) => {
-          //create new object with chatid, other, time
-          //button with link to chat but pass in chatid as prop
-        })
-      });
-  }
+
   function loadChat(chatid) {
     firestore
       .collection(chatid)

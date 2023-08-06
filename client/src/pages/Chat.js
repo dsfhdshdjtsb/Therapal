@@ -21,8 +21,7 @@ export default function ChatRoom() {
   const randomId = Date.now();
   
   const [otherDisplay, setOtherDisplay] = React.useState("");
-  const [conversation, setConversation] = React.useState(
-    auth.currentUser.uid.concat("-")
+  const [conversation, setConversation] = React.useState(auth.currentUser.uid
   );
   let messagesRef = firestore.collection(conversation);
   const query = messagesRef.orderBy("createdAt");
@@ -34,6 +33,9 @@ export default function ChatRoom() {
   const myDisorders = [];
   const keys = Object.keys(state);
   let myDisplay = state.displayName;
+  let historyMessageRef = state.historyMessageRef;
+  
+  
   let commonDisorder;
 
   keys.forEach(key => {
@@ -48,11 +50,11 @@ export default function ChatRoom() {
   }, [conversation]);
 
   useEffect(() => {
-    firestore.collection("matchmaking").doc(auth.currentUser.uid).delete();
     return () => {
       firestore.collection("matchmaking").doc(auth.currentUser.uid).delete();
+      sendLeftMessage();
     };
-    //SEND MESSAGE HERE THAT USER HAS LEFT THE CHAT
+    
   }, [location]);
 
   useEffect(() => {
@@ -91,9 +93,21 @@ export default function ChatRoom() {
       });
     window.addEventListener("beforeunload", event => {
       firestore.collection("matchmaking").doc(auth.currentUser.uid).delete();
+      sendLeftMessage();
     });
     console.log("time to fetch");
-    matchmake();
+
+    
+    if(historyMessageRef)
+    {
+      console.log("historyMessageRef: " + historyMessageRef)
+      setConversation(historyMessageRef);
+    }
+    if(!historyMessageRef)
+    {
+      matchmake();
+    }
+    
   }, []);
   // useEffect(() => {
   //     window.onbeforeunload = () => handler();
@@ -116,13 +130,22 @@ export default function ChatRoom() {
       username: myDisplay,
     });
   };
+  const sendLeftMessage = async ()  => {
+    const { uid } = auth.currentUser;
+    await messagesRef.add({
+      text: "Other user has left the chat",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      uid,
+      username: "System",
+    });
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
       <NavBar />
       <SideBar />
       <ChatWindow messages={messages} genPrompt={genPrompt} auth={auth}/>
-      <UserControls sendMessage={sendMessage} sendReport={sendReport}/>
+      {!historyMessageRef && <UserControls sendMessage={sendMessage} sendReport={sendReport}/> }
       <button onClick={getGpt}>getGpt</button>
     </Box>
   
@@ -143,6 +166,7 @@ export default function ChatRoom() {
   
 
   function saveChat(chatid) {
+    let date = new Date();
     console.log("ran");
     if (
       conversation !== auth.currentUser.uid.concat("-") &&
@@ -157,6 +181,7 @@ export default function ChatRoom() {
           {
             saved: firebase.firestore.FieldValue.arrayUnion({
               other: otherDisplay,
+              time: date,
               chatid: chatid,
             }),
           },
@@ -219,14 +244,11 @@ export default function ChatRoom() {
       .get()
       .then(doc => {
         console.log(doc.data().saved);
-        return doc.data().saved;
-        // doc.data().saved.forEach((chat) => {
-        //     firestore.collection(chat).get().then((snapshot) => {
-        //         snapshot.forEach((doc) => {
-        //             console.log(doc.data())
-        //         })
-        //     })
-        // })
+        // return doc.data().saved;
+        doc.data().saved.forEach((chat) => {
+          //create new object with chatid, other, time
+          //button with link to chat but pass in chatid as prop
+        })
       });
   }
   function loadChat(chatid) {

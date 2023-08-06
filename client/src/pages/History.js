@@ -19,7 +19,11 @@ export default function History() {
       .doc(auth.currentUser.uid)
       .get()
       .then(doc => {
-        setHistory(doc.data().saved);
+        if(doc.data())
+        {
+          setHistory(doc.data().saved);
+        }
+          
       })
   },[]);
   return (
@@ -30,6 +34,7 @@ export default function History() {
         {history.map(chat => <HistoryItem
           name={chat.other}
           date={chat.time}
+          historyRef={chat.chatid}
           width="12%"
           height="15vh">
         </HistoryItem>)}

@@ -88,7 +88,7 @@ export default function ConfigureChat() {
   }
 
   return (
-    <CardContainer height={lg ? "45vh" :"40vh"} width={lg ? "35%":"55%"} title="New Chat">
+    <CardContainer height={lg ? "45vh" :"40vh"} width={lg ? "35%":"65%"} title="New Chat">
       <Grid item xs={6}>
         <TextField
           id="display-name"

@@ -13,15 +13,12 @@ import NavBar from "../components/NavBar";
 import SideBar from "../components/Chat/SideBar";
 import ChatWindow from "../components/Chat/ChatWindow";
 import UserControls from "../components/Chat/UserControls";
-import ClipLoader from "react-spinners/ClipLoader";
+import PulseLoader from "react-spinners/PulseLoader";
+import "../index.css"
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
-const override = {
-  display: "block",
-  margin: "0 auto",
-  borderColor: "red",
-};
+
 
 export default function ChatRoom() {
   const randomId = Date.now();
@@ -154,15 +151,17 @@ export default function ChatRoom() {
 
   return (
     <>
-      {otherDisplay && 
+      
           <Box sx={{ display: "flex" }}>
             <NavBar />
             <SideBar />
-            <ChatWindow messages={messages} getGpt={getGpt} auth={auth}/>
+            {(otherDisplay || historyMessageRef) ? <ChatWindow messages={messages} getGpt={getGpt} auth={auth}/> : <div className="Loading"> <PulseLoader color={"#7FFFD4"} size={10} /></div>}
 
-            {!historyMessageRef && <UserControls sendMessage={sendMessage} sendReport={sendReport}/> }
+            {otherDisplay && !historyMessageRef && <UserControls sendMessage={sendMessage} sendReport={sendReport}/> }
           </Box>
-        }
+          :
+          
+        
     </>
     
     

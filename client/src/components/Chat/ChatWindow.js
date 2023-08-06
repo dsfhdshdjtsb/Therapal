@@ -10,7 +10,11 @@ function ChatWindow(props) {
   function renderMessage(msg) {
     const { text, username, uid } = msg;
     const sent = uid === props.auth.currentUser.uid;
-    scrollDiv.current.scrollIntoView({ behavior: "smooth" });
+    if(scrollDiv.current)
+    {
+      scrollDiv.current.scrollIntoView({ behavior: "smooth" });
+    }
+    
     return <ChatMessage key={msg.id} text={text} name={username} sent={sent} />;
   }
   

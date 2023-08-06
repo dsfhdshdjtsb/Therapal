@@ -170,7 +170,7 @@ export default function ChatRoom() {
     <>
           <Box sx={{ display: "flex" }}>
             <NavBar />
-            <SideBar />
+            <SideBar sendReport={sendReport}/>
             {!otherDisplay && !historyMessageRef && <div className="Loading"> <PulseLoader color={"#7FFFD4"} size={10} /></div> }
             {!otherDisplay && historyMessageRef && <ChatWindow height={"100vh"} messages={messages} getGpt={getGpt} auth={auth}/>}
             {otherDisplay && !historyMessageRef && <ChatWindow height={"82vh"} messages={messages} getGpt={getGpt} auth={auth}/> }

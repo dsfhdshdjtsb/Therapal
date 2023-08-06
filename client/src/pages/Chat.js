@@ -26,6 +26,7 @@ export default function ChatRoom() {
   const [otherDisplay, setOtherDisplay] = React.useState("");
   const [conversation, setConversation] = React.useState(auth.currentUser.uid
   );
+  const [sharedDisorders, setSharedDisorders] = React.useState([]);
   let messagesRef = firestore.collection(conversation);
   const query = messagesRef.orderBy("createdAt");
   const [messages] = useCollectionData(query, { idField: "id" });
@@ -39,13 +40,16 @@ export default function ChatRoom() {
   let historyMessageRef = state.historyMessageRef;
   
   
-  let commonDisorder;
+  console.log("shared disorders")
+  console.log(sharedDisorders)
 
   keys.forEach(key => {
     if (state[key] === true) {
       myDisorders.push(key);
     }
   });
+  console.log("mydisorders")
+  console.log(myDisorders)
 
   useEffect(() => {
     console.log(conversation);
@@ -83,9 +87,9 @@ export default function ChatRoom() {
           console.log("saving chat+ " + conversation);
           messagesRef.doc(auth.currentUser.uid).delete();
 
-          doc.data().disorders.forEach(disorder => {
+          doc.data().otherDisorders.forEach(disorder => {
             if (myDisorders.includes(disorder)) {
-              commonDisorder = disorder;
+              setSharedDisorders(prev => [...prev, disorder]);
             }
           });
           saveChat(
@@ -208,7 +212,6 @@ export default function ChatRoom() {
   }
 
   async function getGpt(){
-    console.log(commonDisorder)
     const options ={
         method: "POST",
         body: JSON.stringify({
@@ -278,6 +281,7 @@ export default function ChatRoom() {
               disorders: myDisorders,
               randomId: randomId,
               myDisplay: auth.currentUser.displayName,
+              otherDisorders: [],
               otherDisplay: "",
               match: "",
             });
@@ -296,14 +300,14 @@ export default function ChatRoom() {
               {
                 match: auth.currentUser.uid,
                 otherDisplay: auth.currentUser.displayName,
+                otherDisorders: myDisorders,
               },
               { merge: true }
             );
 
             doc.data().disorders.forEach(disorder => {
               if (myDisorders.includes(disorder)) {
-                commonDisorder = disorder;
-                console.log("commonDisorder= " + commonDisorder);
+                setSharedDisorders(prev => [...prev, disorder]);
               }
             });
 

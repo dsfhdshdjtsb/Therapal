@@ -154,9 +154,7 @@ function SideBar(props) {
             <Typography textAlign={"left"} variant="body1">
               You have been matched with a chat partner with similar issues.
               Share your thoughts and opinions openly. If you want an opening
-              prompt, simply generate a prompt using TheraPal. Please be patient
-              with the generate prompt button. Try to not press it again until
-              TheraPal has finished processing your conversation.
+              prompt, simply generate a prompt using TheraPal. 
             </Typography>
             <br />
             <Typography textAlign={"left"} variant="body1">

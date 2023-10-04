@@ -1,3 +1,4 @@
+# Therapal
 # Inspiration
 
 Inspired by personal experiences with friends struggling with mental health issues, TheraPal is an innovative app that aims to provide much-needed support through meaningful conversations. Recognizing that having someone to talk to can be immensely helpful, the app adopts a style similar to Omegle, allowing users to meet new people. However, TheraPal stands out by focusing conversations around users' shared struggle traits and introducing AI prompt assistance to keep interactions more focused and relevant.

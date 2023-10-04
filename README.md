@@ -68,6 +68,6 @@ TheraPal is an app that inherently requires a lot of users to exist, so it is go
 ![original](https://github.com/kYpranite/Therapal/assets/39254153/41be87fb-7e5d-41d7-a015-71acf90a8cd3)
 ![original](https://github.com/kYpranite/Therapal/assets/39254153/3058f7c6-cc92-437a-8fe5-932a404e2a8b)
 
-[Pitch Video](https://youtu.be/ZHJzjuDPha8?si=7rJ-6yaxY1b2xR7a)
-[DevPost](https://devpost.com/software/therapal)
+## [Pitch Video](https://youtu.be/ZHJzjuDPha8?si=7rJ-6yaxY1b2xR7a)
+## [DevPost](https://devpost.com/software/therapal)
 

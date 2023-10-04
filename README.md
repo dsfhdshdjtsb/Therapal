@@ -64,4 +64,10 @@ AI is the new future, and we recognized the importance of learning how to exploi
 
 TheraPal is an app that inherently requires a lot of users to exist, so it is going to take a lot of work for us to get TheraPal off the ground. Our next steps would be to better improve responsiveness on multiple platforms as well as eliminate bugs. 
 
+![original](https://github.com/kYpranite/Therapal/assets/39254153/d104ae4d-5e77-4add-aa98-038fdd729181)
+![original](https://github.com/kYpranite/Therapal/assets/39254153/41be87fb-7e5d-41d7-a015-71acf90a8cd3)
+![original](https://github.com/kYpranite/Therapal/assets/39254153/3058f7c6-cc92-437a-8fe5-932a404e2a8b)
+
+Pitch Video: https://youtu.be/ZHJzjuDPha8?si=7rJ-6yaxY1b2xR7a
+
 
